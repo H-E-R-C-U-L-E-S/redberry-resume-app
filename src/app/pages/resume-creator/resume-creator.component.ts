@@ -37,6 +37,9 @@ export class ResumeCreatorComponent implements OnInit {
     phone: new FormControl('', [Validators.required]),
   });
 
+  experienceForm = new FormGroup({});
+  educationForm = new FormGroup({});
+
   constructor(private router: Router) {}
 
   goToPage(pageName: string): void {
@@ -59,9 +62,10 @@ export class ResumeCreatorComponent implements OnInit {
   }
 
   nextForm() {
-    if (this.generalInfoForm.valid) {
-      this.step += 1;
-    }
+    this.step += 1;
+  }
+  previousForm() {
+    this.step -= 1;
   }
 
   ngOnInit(): void {}

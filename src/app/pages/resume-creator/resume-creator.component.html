@@ -19,10 +19,9 @@
 
         </div>
 
+
         <form [formGroup]="generalInfoForm" *ngIf="step == 1">
-
             <div class="form-group">
-
                 <div class="form-item">
                     <label for="firstName">სახელი</label>
                     <mat-form-field appearance="outline">
@@ -77,35 +76,57 @@
                 </mat-form-field>
                 <mat-hint>უნდა აკმაყოფილებდეს ქართული მობილურის ნომრის ფორმატს</mat-hint>
             </div>
+        </form>
 
+        <form [formGroup]="experienceForm" *ngIf="step == 2">
 
             <div class="form-item">
-                <div class="form-space"></div>
-                <button mat-flat-button (click)="nextForm()" color="primary">ᲨᲔᲛᲓᲔᲒᲘ</button>
+                <label for="lastName">თანამდებობა</label>
+                <mat-form-field appearance="outline">
+                    <input matInput type="text" name="" placeholder="დეველოპერი,დიზაინერი,ა.შ">
+                </mat-form-field>
+                <mat-hint>მინიმუმ 2 სიმბოლო</mat-hint>
+            </div>
+
+            <div class="form-item">
+                <label for="lastName">დამსაქმებელი</label>
+                <mat-form-field appearance="outline">
+                    <input matInput type="text" name="" placeholder="დამსაქმებელი">
+                </mat-form-field>
+                <mat-hint>მინიმუმ 2 სიმბოლო</mat-hint>
+            </div>
+            <div class="form-group">
+
+            </div>
+            <div class="form-item">
+                <label>აღწერა</label>
+                <mat-form-field appearance="outline">
+                    <textarea type="text" matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize"
+                        cdkAutosizeMinRows="5" cdkAutosizeMaxRows="5"
+                        placeholder="როლი თანამდებობაზე და ზოგადი აღწერა"></textarea>
+                </mat-form-field>
             </div>
         </form>
 
-    </div>
-
-    <div class="preview-container">
-        <div class="general-info-container">
-            <div class="text-info-container">
-                <h1>{{this.generalInfoForm.controls['firstName'].value}}
-                    {{this.generalInfoForm.controls['lastName'].value}}</h1>
-                <div class="contact-info">
-                    <div class="contact-item">
-                        <mat-icon aria-hidden="false" aria-label="Example home icon"
-                            fontIcon="alternate_email"></mat-icon>
-                        {{this.generalInfoForm.controls['email'].value}}
-                    </div>
-                    <div class="contact-item">
-                        <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="phone"></mat-icon>
-                        {{this.generalInfoForm.controls['phone'].value}}
-                    </div>
-                </div>
+        <form [formGroup]="educationForm" *ngIf="step == 3">
+            <div class="form-item">
+                <label for="lastName">სასწავლებელი</label>
+                <mat-form-field appearance="outline">
+                    <input matInput type="text" name="" placeholder="სასწავლებელი">
+                </mat-form-field>
+                <mat-hint>მინიმუმ 2 სიმბოლო</mat-hint>
             </div>
-        </div>
-        <img [src]="imageURL">
+            <div class="form-group">
+
+            </div>
+            <div class="form-item">
+                <label>აღწერა</label>
+                <mat-form-field appearance="outline">
+                    <textarea type="text" matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize"
+                        cdkAutosizeMinRows="5" cdkAutosizeMaxRows="5" placeholder="განათლების აღწერა"></textarea>
+                </mat-form-field>
+            </div>
+        </form>
     </div>
 
 </div>

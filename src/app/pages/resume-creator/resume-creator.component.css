@@ -53,7 +53,6 @@ form {
 form input {
     font-family: helvetica;
     font-weight: normal;
-
 }
 
 .form-group {
@@ -136,4 +135,21 @@ mat-hint {
 .preview-container img {
     width: 40%;
     height: fit-content;
+}
+
+.form-buttons-container {
+    margin-top: 48px;
+    margin-left: 14%;
+    width: 86%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.form-button {
+    background-color: #6B40E3 !important;
+    min-height: 48px;
+    font-weight: 500;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
 }
