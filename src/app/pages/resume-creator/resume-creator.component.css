@@ -1,0 +1,117 @@
+.main-container {
+    display: flex;
+    min-height: 100%;
+}
+
+.form-container {
+    width: 56%;
+    padding: 48px;
+    background-color: #F9F9F9;
+}
+
+.preview-container {
+    width: 44%;
+}
+
+.header-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.header-buttons-container {
+    width: 14%;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+}
+
+.title-container {
+    width: 86%;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #1A1A1A;
+}
+
+.title-container h2 {
+    font-weight: 700;
+    font-family: helvetica;
+    margin-bottom: 6px;
+    color: #1A1A1A;
+}
+
+form {
+    margin-top: 16px;
+    margin-left: 14%;
+    width: 86%;
+    font-family: helvetica;
+}
+
+form input {
+    font-family: helvetica;
+    font-weight: normal;
+
+}
+
+.form-group {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.form-item {
+    margin-top: 24px;
+    width: 100%;
+}
+
+.form-space {
+    width: 8%;
+    height: 16px;
+}
+
+mat-form-field {
+    width: 100%;
+    background-color: white;
+}
+
+
+.form-item label {
+    display: inline-block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #1A1A1A;
+    font-family: helvetica;
+    font-size: larger;
+}
+
+
+.form-item span {
+    font-family: helvetica;
+    font-size: medium;
+    font-weight: bold;
+}
+
+#custom-upload-button {
+    margin-left: 20px;
+    font-family: helvetica;
+    font-weight: 500;
+    font-size: small;
+}
+
+form textarea {
+    width: 100%;
+    font-family: helvetica;
+}
+
+mat-hint {
+    display: inline-block;
+    margin-top: 6px;
+    font-size: small;
+    font-weight: 300;
+}
+
+
+::ng-deep .mat-mdc-form-field-subscript-wrapper {
+    display: none;
+}
