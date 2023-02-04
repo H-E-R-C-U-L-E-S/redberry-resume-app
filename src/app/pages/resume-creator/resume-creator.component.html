@@ -21,7 +21,9 @@
 
 
         <form [formGroup]="generalInfoForm" *ngIf="step == 1">
+
             <div class="form-group">
+
                 <div class="form-item">
                     <label for="firstName">სახელი</label>
                     <mat-form-field appearance="outline">
@@ -44,38 +46,55 @@
 
             <div class="form-item">
                 <div class="form-space"></div>
+
                 <input formControlName="userImg" (change)="showImgPreview($event)" type="file" id="real-file-button"
                     #upload_button hidden="hidden">
+
                 <span>პირადი ფოტოს ატვირთვა</span>
+
                 <button mat-flat-button id="custom-upload-button" (click)="clickUploadButton()"
                     color="primary">ატვირთვა</button>
+
                 <div class="form-space"></div>
             </div>
 
             <div class="form-item">
+
                 <label>ჩემ შესახებ (არა სავალდებულო)</label>
+
                 <mat-form-field appearance="outline">
                     <textarea type="text" matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize"
                         cdkAutosizeMinRows="5" cdkAutosizeMaxRows="5" placeholder="ზოგადი ინფო შენ შესახებ"
                         formControlName="about"></textarea>
                 </mat-form-field>
+
             </div>
 
             <div class="form-item">
+
                 <label for="lastName">ელ.ფოსტა</label>
+
                 <mat-form-field appearance="outline">
                     <input matInput type="email" formControlName="email" name="email"
                         placeholder="anzorr666@redberry.ge">
                 </mat-form-field>
+
                 <mat-hint>უნდა მთავრდებოდეს @redberry.ge-ით</mat-hint>
+
             </div>
+
             <div class="form-item">
+
                 <label for="lastName">მობილურის ნომერი</label>
+
                 <mat-form-field appearance="outline">
                     <input matInput type="tel" formControlName="phone" name="lastName" placeholder="+995 551 12 34 56">
                 </mat-form-field>
+
                 <mat-hint>უნდა აკმაყოფილებდეს ქართული მობილურის ნომრის ფორმატს</mat-hint>
+
             </div>
+
         </form>
 
         <form [formGroup]="experienceForm" *ngIf="step == 2">
@@ -95,9 +114,38 @@
                 </mat-form-field>
                 <mat-hint>მინიმუმ 2 სიმბოლო</mat-hint>
             </div>
+
             <div class="form-group">
 
+                <div class="form-item">
+
+                    <label for="firstName">დაწყების რიცხვი</label>
+
+                    <mat-form-field appearance="outline">
+                        <input matInput [matDatepicker]="picker1" placeholder="mm / dd / yy">
+                        <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
+                        <mat-datepicker #picker1></mat-datepicker>
+                    </mat-form-field>
+
+                </div>
+
+                <div class="form-space"></div>
+
+                <div class="form-item">
+
+                    <label for="lastName">დამთავრების რიცხვი</label>
+
+                    <mat-form-field appearance="outline">
+                        <input matInput [matDatepicker]="picker2" placeholder="mm / dd / yy">
+                        <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
+                        <mat-datepicker #picker2></mat-datepicker>
+                    </mat-form-field>
+
+                </div>
+
             </div>
+
+
             <div class="form-item">
                 <label>აღწერა</label>
                 <mat-form-field appearance="outline">
@@ -117,6 +165,21 @@
                 <mat-hint>მინიმუმ 2 სიმბოლო</mat-hint>
             </div>
             <div class="form-group">
+                <div class="form-item">
+                    <label for="firstName">ხარისხი</label>
+                    <mat-form-field appearance="outline">
+                        <input matInput type="text" name="firstName" placeholder="ანზორ">
+                    </mat-form-field>
+                </div>
+
+                <div class="form-space"></div>
+
+                <div class="form-item">
+                    <label for="lastName">დამთავრების რიცხვი</label>
+                    <mat-form-field appearance="outline">
+                        <input matInput type="date" name="lastName" placeholder="მუმლაძე">
+                    </mat-form-field>
+                </div>
 
             </div>
             <div class="form-item">
@@ -135,9 +198,12 @@
             <div *ngIf="step == 1"></div>
             <button mat-flat-button (click)="previousForm()" *ngIf="step != 1" color="primary"
                 class="form-button">ᲣᲙᲐᲜ</button>
-            <button mat-flat-button (click)="nextForm()" *ngIf="step != 3" color="primary"
-                class="form-button">ᲨᲔᲛᲓᲔᲒᲘ</button>
+
+            <button mat-flat-button (click)="nextForm()" *ngIf="step != 3" color="primary" class="form-button"
+                type="submit">ᲨᲔᲛᲓᲔᲒᲘ</button>
+
             <button mat-flat-button *ngIf="step == 3" color="primary" class="form-button">ᲓᲐᲡᲠᲣᲚᲔᲑᲐ</button>
+
         </div>
 
     </div>
