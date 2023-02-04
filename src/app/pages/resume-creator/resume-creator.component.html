@@ -11,13 +11,15 @@
             </div>
 
             <div class="title-container">
-                <h2>ᲞᲘᲠᲐᲓᲘ ᲘᲜᲤᲝ</h2>
-                <h2>1/3</h2>
+                <h2 *ngIf="step == 1">ᲞᲘᲠᲐᲓᲘ ᲘᲜᲤᲝ</h2>
+                <h2 *ngIf="step == 2">ᲒᲐᲛᲝᲪᲓᲘᲚᲔᲑᲐ</h2>
+                <h2 *ngIf="step == 3">ᲒᲐᲜᲐᲗᲚᲔᲑᲐ</h2>
+                <h2>{{step}}/3</h2>
             </div>
 
         </div>
 
-        <form [formGroup]="generalInfoForm">
+        <form [formGroup]="generalInfoForm" *ngIf="step == 1">
 
             <div class="form-group">
 
@@ -43,8 +45,8 @@
 
             <div class="form-item">
                 <div class="form-space"></div>
-                <input formControlName="userImg" type="file" accept="image/*" id="real-file-button" #upload_button
-                    hidden="hidden">
+                <input formControlName="userImg" (change)="showImgPreview($event)" type="file" id="real-file-button"
+                    #upload_button hidden="hidden">
                 <span>პირადი ფოტოს ატვირთვა</span>
                 <button mat-flat-button id="custom-upload-button" (click)="clickUploadButton()"
                     color="primary">ატვირთვა</button>
@@ -79,19 +81,31 @@
 
             <div class="form-item">
                 <div class="form-space"></div>
-                <button mat-flat-button color="primary">ᲨᲔᲛᲓᲔᲒᲘ</button>
+                <button mat-flat-button (click)="nextForm()" color="primary">ᲨᲔᲛᲓᲔᲒᲘ</button>
             </div>
         </form>
 
     </div>
 
     <div class="preview-container">
-        <h1>{{this.generalInfoForm.controls['firstName'].value}}</h1>
-        <h1>{{this.generalInfoForm.controls['lastName'].value}}</h1>
-        <h1>{{this.generalInfoForm.controls['email'].value}}</h1>
-        <h1>{{this.generalInfoForm.controls['phone'].value}}</h1>
-        <h1>{{this.generalInfoForm.controls['about'].value}}</h1>
-
+        <div class="general-info-container">
+            <div class="text-info-container">
+                <h1>{{this.generalInfoForm.controls['firstName'].value}}
+                    {{this.generalInfoForm.controls['lastName'].value}}</h1>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <mat-icon aria-hidden="false" aria-label="Example home icon"
+                            fontIcon="alternate_email"></mat-icon>
+                        {{this.generalInfoForm.controls['email'].value}}
+                    </div>
+                    <div class="contact-item">
+                        <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="phone"></mat-icon>
+                        {{this.generalInfoForm.controls['phone'].value}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <img [src]="imageURL">
     </div>
 
 </div>

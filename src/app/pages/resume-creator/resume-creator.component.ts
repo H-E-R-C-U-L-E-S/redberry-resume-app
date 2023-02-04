@@ -15,6 +15,9 @@ import {
 export class ResumeCreatorComponent implements OnInit {
   @ViewChild('upload_button') button_upload!: ElementRef<HTMLElement>;
 
+  step: any = 1;
+  imageURL!: string;
+
   generalInfoForm = new FormGroup({
     firstName: new FormControl('', [
       Validators.required,
@@ -31,10 +34,7 @@ export class ResumeCreatorComponent implements OnInit {
       Validators.email,
       Validators.pattern('[A-Za-z0-9._%+-]+@redberry.ge'),
     ]),
-    phone: new FormControl('', [
-      Validators.required,
-      Validators.pattern('[\\+9955]w'),
-    ]),
+    phone: new FormControl('', [Validators.required]),
   });
 
   constructor(private router: Router) {}
@@ -45,6 +45,23 @@ export class ResumeCreatorComponent implements OnInit {
 
   clickUploadButton() {
     this.button_upload.nativeElement.click();
+  }
+
+  showImgPreview(e: any) {
+    if (e.target.files) {
+      var reader = new FileReader();
+      reader.readAsDataURL(e.target.files[0]);
+
+      reader.onload = (event: any) => {
+        this.imageURL = event.target.result;
+      };
+    }
+  }
+
+  nextForm() {
+    if (this.generalInfoForm.valid) {
+      this.step += 1;
+    }
   }
 
   ngOnInit(): void {}
