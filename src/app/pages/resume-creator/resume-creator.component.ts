@@ -15,14 +15,29 @@ import {
 export class ResumeCreatorComponent implements OnInit {
   @ViewChild('upload_button') button_upload!: ElementRef<HTMLElement>;
 
-  generalForm!: FormGroup;
+  generalInfoForm = new FormGroup({
+    firstName: new FormControl('', [
+      Validators.required,
+      Validators.minLength(2),
+    ]),
+    lastName: new FormControl('', [
+      Validators.required,
+      Validators.minLength(2),
+    ]),
+    userImg: new FormControl('', [Validators.required]),
+    about: new FormControl(''),
+    email: new FormControl('', [
+      Validators.required,
+      Validators.email,
+      Validators.pattern('[A-Za-z0-9._%+-]+@redberry.ge'),
+    ]),
+    phone: new FormControl('', [
+      Validators.required,
+      Validators.pattern('[\\+9955]w'),
+    ]),
+  });
 
-  firstName = new FormControl('');
-  lastName = new FormControl('');
-
-  constructor(private router: Router) {
-    const some = JSON.parse(localStorage.getItem('formValue')!);
-  }
+  constructor(private router: Router) {}
 
   goToPage(pageName: string): void {
     this.router.navigate([`${pageName}`]);

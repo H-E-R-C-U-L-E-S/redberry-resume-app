@@ -3,11 +3,13 @@
     <div class="form-container">
 
         <div class="header-container">
+
             <div class="header-buttons-container">
                 <button (click)="goToPage('')" mat-icon-button>
                     <mat-icon>keyboard_arrow_left</mat-icon>
                 </button>
             </div>
+
             <div class="title-container">
                 <h2>ᲞᲘᲠᲐᲓᲘ ᲘᲜᲤᲝ</h2>
                 <h2>1/3</h2>
@@ -15,13 +17,14 @@
 
         </div>
 
-        <form>
+        <form [formGroup]="generalInfoForm">
+
             <div class="form-group">
 
                 <div class="form-item">
                     <label for="firstName">სახელი</label>
                     <mat-form-field appearance="outline">
-                        <input [formControl]="firstName" matInput placeholder="ანზორ">
+                        <input matInput formControlName="firstName" type="text" name="firstName" placeholder="ანზორ">
                     </mat-form-field>
                     <mat-hint>მინიმუმ 2 ასო, ქართული ასოები</mat-hint>
                 </div>
@@ -31,15 +34,17 @@
                 <div class="form-item">
                     <label for="lastName">გვარი</label>
                     <mat-form-field appearance="outline">
-                        <input [formControl]="lastName" matInput type="text" name="lastName" placeholder="მუმლაძე">
+                        <input matInput formControlName="lastName" type="text" name="lastName" placeholder="მუმლაძე">
                     </mat-form-field>
                     <mat-hint>მინიმუმ 2 ასო, ქართული ასოები</mat-hint>
                 </div>
 
             </div>
+
             <div class="form-item">
                 <div class="form-space"></div>
-                <input type="file" id="real-file-button" #upload_button hidden="hidden">
+                <input formControlName="userImg" type="file" accept="image/*" id="real-file-button" #upload_button
+                    hidden="hidden">
                 <span>პირადი ფოტოს ატვირთვა</span>
                 <button mat-flat-button id="custom-upload-button" (click)="clickUploadButton()"
                     color="primary">ატვირთვა</button>
@@ -49,22 +54,24 @@
             <div class="form-item">
                 <label>ჩემ შესახებ (არა სავალდებულო)</label>
                 <mat-form-field appearance="outline">
-                    <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="5"
-                        cdkAutosizeMaxRows="5" placeholder="ზოგადი ინფო შენ შესახებ"></textarea>
+                    <textarea type="text" matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize"
+                        cdkAutosizeMinRows="5" cdkAutosizeMaxRows="5" placeholder="ზოგადი ინფო შენ შესახებ"
+                        formControlName="about"></textarea>
                 </mat-form-field>
             </div>
 
             <div class="form-item">
                 <label for="lastName">ელ.ფოსტა</label>
                 <mat-form-field appearance="outline">
-                    <input matInput type="email" name="lastName" placeholder="anzorr666@redberry.ge">
+                    <input matInput type="email" formControlName="email" name="email"
+                        placeholder="anzorr666@redberry.ge">
                 </mat-form-field>
                 <mat-hint>უნდა მთავრდებოდეს @redberry.ge-ით</mat-hint>
             </div>
             <div class="form-item">
                 <label for="lastName">მობილურის ნომერი</label>
                 <mat-form-field appearance="outline">
-                    <input matInput type="tel" name="lastName" placeholder="+995 551 12 34 56">
+                    <input matInput type="tel" formControlName="phone" name="lastName" placeholder="+995 551 12 34 56">
                 </mat-form-field>
                 <mat-hint>უნდა აკმაყოფილებდეს ქართული მობილურის ნომრის ფორმატს</mat-hint>
             </div>
@@ -79,7 +86,12 @@
     </div>
 
     <div class="preview-container">
-        <h1>{{ firstName.value }} {{ lastName.value }} </h1>
+        <h1>{{this.generalInfoForm.controls['firstName'].value}}</h1>
+        <h1>{{this.generalInfoForm.controls['lastName'].value}}</h1>
+        <h1>{{this.generalInfoForm.controls['email'].value}}</h1>
+        <h1>{{this.generalInfoForm.controls['phone'].value}}</h1>
+        <h1>{{this.generalInfoForm.controls['about'].value}}</h1>
+
     </div>
 
 </div>
