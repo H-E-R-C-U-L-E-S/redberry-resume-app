@@ -7,6 +7,8 @@ import {
   Validators,
 } from '@angular/forms';
 
+import { HttpClient } from '@angular/common/http';
+
 @Component({
   selector: 'app-resume-creator',
   templateUrl: './resume-creator.component.html',
@@ -17,6 +19,8 @@ export class ResumeCreatorComponent implements OnInit {
 
   step: any = 1;
   imageURL!: string;
+
+  spinnerData!: any;
 
   generalInfoForm = new FormGroup({
     firstName: new FormControl('', [
@@ -40,7 +44,11 @@ export class ResumeCreatorComponent implements OnInit {
   experienceForm = new FormGroup({});
   educationForm = new FormGroup({});
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private http: HttpClient) {
+    this.getDegrees().subscribe((data) => {
+      this.spinnerData = data;
+    });
+  }
 
   goToPage(pageName: string): void {
     this.router.navigate([`${pageName}`]);
@@ -61,11 +69,15 @@ export class ResumeCreatorComponent implements OnInit {
     }
   }
 
-  nextForm() {
-    this.step += 1;
+  getDegrees() {
+    return this.http.get('https://resume.redberryinternship.ge/api/degrees');
   }
+
   previousForm() {
     this.step -= 1;
+  }
+  nextForm() {
+    this.step += 1;
   }
 
   ngOnInit(): void {}

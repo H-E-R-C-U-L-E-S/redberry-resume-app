@@ -167,8 +167,13 @@
             <div class="form-group">
                 <div class="form-item">
                     <label for="firstName">ხარისხი</label>
+
                     <mat-form-field appearance="outline">
-                        <input matInput type="text" name="firstName" placeholder="ანზორ">
+                        <mat-select placeholder="აირჩიეთ ხარისხი">
+                            <mat-option *ngFor="let item of spinnerData" [value]="item.title">
+                                {{item.title}}
+                            </mat-option>
+                        </mat-select>
                     </mat-form-field>
                 </div>
 
@@ -177,7 +182,9 @@
                 <div class="form-item">
                     <label for="lastName">დამთავრების რიცხვი</label>
                     <mat-form-field appearance="outline">
-                        <input matInput type="date" name="lastName" placeholder="მუმლაძე">
+                        <input matInput [matDatepicker]="picker3" placeholder="mm / dd / yy">
+                        <mat-datepicker-toggle matIconSuffix [for]="picker3"></mat-datepicker-toggle>
+                        <mat-datepicker #picker3></mat-datepicker>
                     </mat-form-field>
                 </div>
 
