@@ -127,6 +127,40 @@
                 </mat-form-field>
             </div>
         </form>
+
+
+
+
+        <div class="form-buttons-container">
+            <div *ngIf="step == 1"></div>
+            <button mat-flat-button (click)="previousForm()" *ngIf="step != 1" color="primary"
+                class="form-button">ᲣᲙᲐᲜ</button>
+            <button mat-flat-button (click)="nextForm()" *ngIf="step != 3" color="primary"
+                class="form-button">ᲨᲔᲛᲓᲔᲒᲘ</button>
+            <button mat-flat-button *ngIf="step == 3" color="primary" class="form-button">ᲓᲐᲡᲠᲣᲚᲔᲑᲐ</button>
+        </div>
+
+    </div>
+
+    <div class="preview-container">
+        <div class="general-info-container">
+            <div class="text-info-container">
+                <h1>{{this.generalInfoForm.controls['firstName'].value}}
+                    {{this.generalInfoForm.controls['lastName'].value}}</h1>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <mat-icon aria-hidden="false" aria-label="Example home icon"
+                            fontIcon="alternate_email"></mat-icon>
+                        {{this.generalInfoForm.controls['email'].value}}
+                    </div>
+                    <div class="contact-item">
+                        <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="phone"></mat-icon>
+                        {{this.generalInfoForm.controls['phone'].value}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <img [src]="imageURL">
     </div>
 
 </div>
