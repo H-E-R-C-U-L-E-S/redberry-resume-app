@@ -55,16 +55,19 @@ form input {
     font-weight: normal;
 }
 
-.form-group {
+.form-page {
     width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    height: 100%;
 }
 
-.form-item {
+.form-page-item {
     margin-top: 24px;
     width: 100%;
+}
+
+.form-page-item-container {
+    display: flex;
+    align-items: center;
 }
 
 .form-space {
@@ -78,17 +81,17 @@ mat-form-field {
 }
 
 
-.form-item label {
+.form-page-item label {
     display: inline-block;
     margin-bottom: 8px;
-    font-weight: 600;
+    font-weight: bold;
     color: #1A1A1A;
     font-family: helvetica;
     font-size: larger;
 }
 
 
-.form-item span {
+.form-page-item span {
     font-family: helvetica;
     font-size: medium;
     font-weight: bold;
@@ -97,9 +100,8 @@ mat-form-field {
 #custom-upload-button {
     margin-left: 20px;
     font-family: helvetica;
-    font-weight: 500;
+    font-weight: normal;
     background-color: #0E80BF;
-    font-size: small;
 }
 
 form textarea {
@@ -110,33 +112,15 @@ form textarea {
 mat-hint {
     display: inline-block;
     margin-top: 6px;
-    font-size: small;
-    font-weight: 300;
+    font-family: helvetica;
+    font-size: smaller;
+    font-weight: 500;
+    color: #2E2E2E;
 }
 
 
 ::ng-deep .mat-mdc-form-field-subscript-wrapper {
     display: none;
-}
-
-.general-info-container {
-    width: 100%;
-    display: flex;
-}
-
-.text-info-container {
-    width: 100%;
-}
-
-.text-info-container h1 {
-    font-family: helvetica;
-    font-weight: bold;
-    color: #F93B1D;
-}
-
-.preview-container img {
-    width: 40%;
-    height: fit-content;
 }
 
 .form-buttons-container {
@@ -148,12 +132,29 @@ mat-hint {
     align-items: center;
 }
 
+.add-button-container {
+    margin-top: 32px;
+    margin-left: 14%;
+    margin-bottom: 64px;
+    width: 86%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.add-form-button {
+    min-height: 48px;
+    background-color: #62A1EB !important;
+    font-family: helvetica;
+    font-weight: normal;
+}
+
 .form-button {
     background-color: #6B40E3 !important;
     min-height: 48px;
-    font-weight: 500;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 16px;
+    font-weight: normal;
+    font-family: helvetica;
+    font-size: medium;
 }
 
 .input-container {
@@ -179,4 +180,11 @@ mat-form-field img {
 ::ng-deep .mat-mdc-form-field.ng-valid .mdc-text-field .mdc-notched-outline__trailing,
 ::ng-deep .mat-mdc-form-field.ng-valid .mdc-text-field .mdc-notched-outline__leading {
     border-color: #98E37E !important;
+}
+
+
+.form-divider {
+    height: 2px;
+    width: 100%;
+    background-color: #C1C1C1;
 }

@@ -1,9 +1,6 @@
 <div class="main-container">
-
     <div class="form-container">
-
         <div class="header-container">
-
             <div class="header-buttons-container">
                 <button (click)="goToPage('')" mat-icon-button>
                     <mat-icon>keyboard_arrow_left</mat-icon>
@@ -11,367 +8,186 @@
             </div>
 
             <div class="title-container">
-                <h2 *ngIf="step == 1">ᲞᲘᲠᲐᲓᲘ ᲘᲜᲤᲝ</h2>
-                <h2 *ngIf="step == 2">ᲒᲐᲛᲝᲪᲓᲘᲚᲔᲑᲐ</h2>
-                <h2 *ngIf="step == 3">ᲒᲐᲜᲐᲗᲚᲔᲑᲐ</h2>
-                <h2>{{step}}/3</h2>
+                <h2 *ngIf="formPage == 1">ᲞᲘᲠᲐᲓᲘ ᲘᲜᲤᲝ</h2>
+                <h2 *ngIf="formPage == 2">ᲒᲐᲛᲝᲪᲓᲘᲚᲔᲑᲐ</h2>
+                <h2 *ngIf="formPage == 3">ᲒᲐᲜᲐᲗᲚᲔᲑᲐ</h2>
+                <h2>{{ formPage }}/3</h2>
             </div>
-
         </div>
 
+        <form [formGroup]="form">
+            <div class="form-page" *ngIf="formPage == 1">
 
-        <form [formGroup]="generalInfoForm" *ngIf="step == 1">
+                <div class="form-page-item-container">
 
-            <div class="form-group">
-                <div class="form-item">
-
-                    <label for="firstName">სახელი</label>
-
-                    <div class="input-container">
-
-                        <mat-form-field appearance="outline">
-                            <input matInput formControlName="firstName" type="text" name="firstName"
-                                placeholder="ანზორ">
-                            <img matSuffix *ngIf="generalInfoForm.controls['firstName'].valid "
-                                src="../../../assets/icons/correct-icon.svg">
-                        </mat-form-field>
-
+                    <div class="form-page-item">
+                        <label for="name">სახელი</label>
                         <div class="input-container">
-                            <div class="form-space"></div>
-                            <img src="../../../assets/icons/error-icon.svg"
-                                *ngIf="generalInfoForm.controls['firstName'].invalid && generalInfoForm.controls['firstName'].touched">
-                            <div class="form-space"></div>
-                        </div>
 
+                            <mat-form-field appearance="outline">
+                                <input matInput formControlName="name" name="name" type="text" placeholder="ანზორ" />
+                                <img matSuffix *ngIf="form.controls['name'].valid" src="../../../assets/icons/correct-icon.svg" />
+                            </mat-form-field>
+
+                            <div class="input-container">
+                                <div class="form-space"></div>
+                                <img src="../../../assets/icons/error-icon.svg" *ngIf="form.controls['name'].invalid && form.controls['name'].touched" />
+                                <div class="form-space"></div>
+                            </div>
+
+                        </div>
+                        <mat-hint>მინიმუმ 2 ასო, ქართული ასოები</mat-hint>
                     </div>
 
-                    <mat-hint>მინიმუმ 2 ასო, ქართული ასოები</mat-hint>
+                    <div class="form-page-item">
+                        <label for="surname">გვარი</label>
+                        <div class="input-container">
+
+                            <mat-form-field appearance="outline">
+                                <input matInput formControlName="surname" name="surname" type="text" placeholder="ანზორ" />
+                                <img matSuffix *ngIf="form.controls['surname'].valid" src="../../../assets/icons/correct-icon.svg" />
+                            </mat-form-field>
+
+                            <div class="input-container" *ngIf="form.controls['surname'].invalid && form.controls['surname'].touched">
+                                <div class="form-space"></div>
+                                <img src="../../../assets/icons/error-icon.svg" />
+                                <div class="form-space"></div>
+                            </div>
+
+                        </div>
+                        <mat-hint>მინიმუმ 2 ასო, ქართული ასოები</mat-hint>
+                    </div>
 
                 </div>
 
-                <div class="form-item">
+                <div class="form-space"></div>
 
-                    <label for="lastName">გვარი</label>
+                <div class="form-page-item-container">
+                    <div class="form-page-item">
 
-                    <div class="input-container">
+                        <input (change)="onImageChange($event)" type="file" hidden="hidden" #upload_button />
+                        <span [ngStyle]="{color: form.controls['image'].invalid && form.controls['image'].touched ? '#EF5050' : '#1A1A1A'}">პირადი ფოტოს ატვირთვა*</span>
+                        <button type="button" mat-flat-button id="custom-upload-button" (click)="clickUploadButton()" color="primary">ატვირთვა</button>
+
+                    </div>
+                </div>
+
+                <div class="form-space"></div>
+
+                <div class="form-page-item-container">
+                    <div class="form-page-item">
+                        <label for="about_me">ჩემ შესახებ (არა სავალდებულო)</label>
 
                         <mat-form-field appearance="outline">
-                            <input matInput formControlName="lastName" type="text" name="lastName"
-                                placeholder="მუმლაძე">
-                            <img matSuffix
-                                *ngIf="generalInfoForm.controls['lastName'].valid && generalInfoForm.controls['lastName'].value != null"
-                                src="../../../assets/icons/correct-icon.svg">
+                            <textarea matInput cdkTextareaAutosize type="text" #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="5" cdkAutosizeMaxRows="5" placeholder="ზოგადი ინფო შენ შესახებ"
+                                formControlName="about_me" name="about_me"></textarea>
                         </mat-form-field>
 
-                        <div class="input-container"
-                            *ngIf="generalInfoForm.controls['lastName'].invalid && generalInfoForm.controls['lastName'].touched">
-                            <div class="form-space"></div>
-                            <img src="../../../assets/icons/error-icon.svg">
-                            <div class="form-space"></div>
+                    </div>
+                </div>
+
+                <div class="form-page-item-container">
+                    <div class="form-page-item">
+                        <label for="email">ელ.ფოსტა</label>
+                        <div class="input-container">
+
+                            <mat-form-field appearance="outline">
+                                <input matInput type="email" formControlName="email" name="email" placeholder="anzorr666@redberry.ge" />
+                                <img matSuffix *ngIf="form.controls['email'].valid" src="../../../assets/icons/correct-icon.svg" />
+                            </mat-form-field>
+
+                            <div class="input-container" *ngIf="form.controls['email'].invalid && form.controls['email'].touched">
+                                <div class="form-space"></div>
+                                <img src="../../../assets/icons/error-icon.svg" />
+                                <div class="form-space"></div>
+                            </div>
+
+                        </div>
+                        <mat-hint>უნდა მთავრდებოდეს @redberry.ge-ით</mat-hint>
+                    </div>
+                </div>
+
+                <div class="form-page-item-container">
+                    <div class="form-page-item">
+                        <label for="phone">მობილურის ნომერი</label>
+                        <div class="input-container">
+
+                            <mat-form-field appearance="outline">
+                                <input matInput type="tel" prefix="+995 " mask="XXX XX XX XX" [validation]='true' formControlName="phone_number" name="phone" placeholder="+995 551 12 34 56" />
+                                <img matSuffix *ngIf="form.controls['phone_number'].valid" src="../../../assets/icons/correct-icon.svg" />
+                            </mat-form-field>
+
+                            <div class="input-container" *ngIf="form.controls['phone_number'].invalid &&form.controls['phone_number'].touched">
+                                <div class="form-space"></div>
+                                <img src="../../../assets/icons/error-icon.svg" />
+                                <div class="form-space"></div>
+                            </div>
+
+                        </div>
+                        <mat-hint>უნდა აკმაყოფილებდეს ქართული მობილურის ნომრის ფორმატს</mat-hint>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="form-page" *ngIf="formPage == 2">
+                <ng-container formArrayName="experiences" *ngFor="let o of experiences.controls;let i = index">
+                    <div [formGroupName]="i">
+
+                        <div class="form-page-item-container">
+                            <div class="form-page-item">
+                                <label for="position">თანამდებობა</label>
+                                <div class="input-container">
+
+                                    <mat-form-field appearance="outline">
+                                        <input matInput type="text" formControlName="position" name="position" placeholder="დეველოპერი, დიზაინერი, ა.შ" />
+                                        <img matSuffix *ngIf="this.experienceForm.controls['position'].valid" src="../../../assets/icons/correct-icon.svg" />
+                                    </mat-form-field>
+
+                                    <div class="input-container" *ngIf="this.experienceForm.controls['position'].invalid && this.experienceForm.controls['position'].touched">
+                                        <div class="form-space"></div>
+                                        <img src="../../../assets/icons/error-icon.svg" />
+                                        <div class="form-space"></div>
+                                    </div>
+
+                                </div>
+                                <mat-hint>უნდა აკმაყოფილებდეს ქართული მობილურის ნომრის ფორმატს</mat-hint>
+                            </div>
                         </div>
 
                     </div>
 
-                    <mat-hint>მინიმუმ 2 ასო, ქართული ასოები</mat-hint>
-
-                </div>
+                </ng-container>
             </div>
 
-            <div class="form-item">
-
-                <div class="form-space"></div>
-
-                <input (change)="showImgPreview($event)" type="file" id="real-file-button" #upload_button
-                    hidden="hidden" required>
-
-                <span [ngStyle]="{'color':(imageURL == '' && touched) ? '#EF5050' : '#1A1A1A'}">პირადი ფოტოს
-                    ატვირთვა*</span>
-
-                <button type="button" mat-flat-button id="custom-upload-button" (click)="clickUploadButton()"
-                    color="primary">ატვირთვა</button>
-
-                <div class="form-space"></div>
-
-            </div>
-
-            <div class="form-item">
-
-                <label for="about">ჩემ შესახებ (არა სავალდებულო)</label>
-
-                <mat-form-field appearance="outline">
-                    <textarea type="text" matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize"
-                        cdkAutosizeMinRows="5" cdkAutosizeMaxRows="5" placeholder="ზოგადი ინფო შენ შესახებ"
-                        formControlName="about" name="about"></textarea>
-                </mat-form-field>
-
-            </div>
-
-            <div class="form-item">
-
-                <label for="email">ელ.ფოსტა</label>
-
-                <div class="input-container">
-
-                    <mat-form-field appearance="outline">
-                        <input matInput type="email" formControlName="email" name="email"
-                            placeholder="anzorr666@redberry.ge">
-                        <img matSuffix
-                            *ngIf="generalInfoForm.controls['email'].valid && generalInfoForm.controls['email'].value != null"
-                            src="../../../assets/icons/correct-icon.svg">
-                    </mat-form-field>
-
-                    <div class="input-container"
-                        *ngIf="generalInfoForm.controls['email'].invalid && generalInfoForm.controls['email'].touched">
-                        <div class="form-space"></div>
-                        <img src="../../../assets/icons/error-icon.svg">
-                        <div class="form-space"></div>
-                    </div>
-
-                </div>
-
-                <mat-hint>უნდა მთავრდებოდეს @redberry.ge-ით</mat-hint>
-
-            </div>
-
-            <div class="form-item">
-
-                <label for="phone">მობილურის ნომერი</label>
-
-                <div class="input-container">
-
-                    <mat-form-field appearance="outline">
-                        <input matInput type="tel" prefix="+995 " mask="XXX XX XX XX" [validation]="true"
-                            formControlName="phone" name="phone" placeholder="+995 551 12 34 56">
-                        <img matSuffix
-                            *ngIf="generalInfoForm.controls['phone'].valid && generalInfoForm.controls['phone'].value != null"
-                            src="../../../assets/icons/correct-icon.svg">
-                    </mat-form-field>
-
-                    <div class="input-container"
-                        *ngIf="generalInfoForm.controls['phone'].invalid && generalInfoForm.controls['phone'].touched">
-                        <div class="form-space"></div>
-                        <img src="../../../assets/icons/error-icon.svg">
-                        <div class="form-space"></div>
-                    </div>
-
-                </div>
-
-                <mat-hint>უნდა აკმაყოფილებდეს ქართული მობილურის ნომრის ფორმატს</mat-hint>
-
-            </div>
-
+            <div class="form-page" *ngIf="formPage == 3"></div>
         </form>
 
-        <form [formGroup]="experienceForm" *ngIf="step == 2">
+        <div class="buttons">
 
-            <div class="form-item">
-
-                <label for="position">თანამდებობა</label>
-
-                <div class="input-container">
-
-                    <mat-form-field appearance="outline">
-                        <input matInput type="text" name="position" formControlName="position"
-                            placeholder="დეველოპერი,დიზაინერი,ა.შ">
-                        <img matSuffix
-                            *ngIf="experienceForm.controls['position'].valid && experienceForm.controls['position'].value != null"
-                            src="../../../assets/icons/correct-icon.svg">
-                    </mat-form-field>
-
-                    <div class="input-container"
-                        *ngIf="experienceForm.controls['position'].invalid && experienceForm.controls['position'].touched">
-                        <div class="form-space"></div>
-                        <img src="../../../assets/icons/error-icon.svg">
-                        <div class="form-space"></div>
-                    </div>
-
-                </div>
-
-                <mat-hint>მინიმუმ 2 სიმბოლო</mat-hint>
-
+            <div class="add-button-container">
+                <button mat-flat-button color="primary" *ngIf="formPage == 2" class="add-form-button" (click)="addExperienceItem()">მეტი გამოცდილების დამატება</button>
+                <button mat-flat-button color="primary" *ngIf="formPage == 3" class="add-form-button">სხვა სასწავლებლის დამატება</button>
             </div>
 
-            <div class="form-item">
+            <div class="form-buttons-container">
+                <div *ngIf="formPage == 1"></div>
+                <button mat-flat-button (click)="previousFormPage()" *ngIf="formPage != 1" color="primary" class="form-button">
+                    ᲣᲙᲐᲜ
+                </button>
 
-                <label for="employer">დამსაქმებელი</label>
+                <button mat-flat-button (click)="nextFormPage()" *ngIf="formPage != 3" color="primary" class="form-button" type="submit">
+                    ᲨᲔᲛᲓᲔᲒᲘ
+                </button>
 
-                <div class="input-container">
-
-                    <mat-form-field appearance="outline">
-                        <input matInput type="text" name="employer" formControlName="employer"
-                            placeholder="დამსაქმებელი">
-                        <img matSuffix
-                            *ngIf="experienceForm.controls['employer'].valid && experienceForm.controls['employer'].value != null"
-                            src="../../../assets/icons/correct-icon.svg">
-                    </mat-form-field>
-
-                    <div class="input-container"
-                        *ngIf="experienceForm.controls['employer'].invalid && experienceForm.controls['employer'].touched">
-                        <div class="form-space"></div>
-                        <img src="../../../assets/icons/error-icon.svg">
-                        <div class="form-space"></div>
-                    </div>
-
-                </div>
-
-                <mat-hint>მინიმუმ 2 სიმბოლო</mat-hint>
-
+                <button mat-flat-button (click)="sendForm()" *ngIf="formPage == 3" color="primary" class="form-button">
+                    ᲓᲐᲡᲠᲣᲚᲔᲑᲐ
+                </button>
             </div>
-
-            <div class="form-group">
-
-                <div class="form-item">
-
-                    <label for="jobStartDate">დაწყების რიცხვი</label>
-
-                    <mat-form-field appearance="outline">
-                        <input matInput [matDatepicker]="picker1" name="jobStartDate" formControlName="jobStartDate"
-                            placeholder="mm / dd / yy">
-                        <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
-                        <mat-datepicker #picker1></mat-datepicker>
-                    </mat-form-field>
-
-                </div>
-
-                <div class="form-space"></div>
-
-                <div class="form-item">
-
-                    <label for="jobEndDate">დამთავრების რიცხვი</label>
-
-                    <mat-form-field appearance="outline">
-                        <input matInput [matDatepicker]="picker2" name="jobEndDate" formControlName="jobEndDate"
-                            placeholder="mm / dd / yy">
-                        <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
-                        <mat-datepicker #picker2></mat-datepicker>
-                    </mat-form-field>
-
-                </div>
-
-            </div>
-
-
-            <div class="form-item">
-
-                <label>აღწერა</label>
-
-                <mat-form-field appearance="outline">
-                    <textarea type="text" matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize"
-                        cdkAutosizeMinRows="5" cdkAutosizeMaxRows="5" formControlName="workDescription"
-                        placeholder="როლი თანამდებობაზე და ზოგადი აღწერა"></textarea>
-                </mat-form-field>
-
-            </div>
-
-        </form>
-
-        <form [formGroup]="educationForm" *ngIf="step == 3">
-
-            <div class="form-item">
-
-                <label for="school">სასწავლებელი</label>
-
-                <div class="input-container">
-
-                    <mat-form-field appearance="outline">
-                        <input matInput type="text" name="school" formControlName="school"
-                            placeholder="დეველოპერი,დიზაინერი,ა.შ">
-                        <img matSuffix
-                            *ngIf="educationForm.controls['school'].valid && educationForm.controls['school'].value != null"
-                            src="../../../assets/icons/correct-icon.svg">
-                    </mat-form-field>
-
-                    <div class="input-container"
-                        *ngIf="educationForm.controls['school'].invalid && educationForm.controls['school'].touched">
-                        <div class="form-space"></div>
-                        <img src="../../../assets/icons/error-icon.svg">
-                        <div class="form-space"></div>
-                    </div>
-
-                </div>
-
-                <mat-hint>მინიმუმ 2 სიმბოლო</mat-hint>
-
-            </div>
-
-            <div class="form-group">
-                <div class="form-item">
-                    <label for="degree">ხარისხი</label>
-
-                    <mat-form-field appearance="outline">
-                        <mat-select placeholder="აირჩიეთ ხარისხი" formControlName="degree">
-                            <mat-option *ngFor="let item of spinnerData" [value]="item.title">
-                                {{item.title}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-
-                </div>
-
-                <div class="form-space"></div>
-
-                <div class="form-item">
-                    <label for="lastName">დამთავრების რიცხვი</label>
-                    <mat-form-field appearance="outline">
-                        <input matInput [matDatepicker]="picker3" placeholder="mm / dd / yy" formControlName="endDate">
-                        <mat-datepicker-toggle matIconSuffix [for]="picker3"></mat-datepicker-toggle>
-                        <mat-datepicker #picker3></mat-datepicker>
-                    </mat-form-field>
-                </div>
-
-            </div>
-
-            <div class="form-item">
-
-                <label>აღწერა</label>
-
-                <mat-form-field appearance="outline">
-                    <textarea type="text" matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize"
-                        cdkAutosizeMinRows="5" cdkAutosizeMaxRows="5" placeholder="განათლების აღწერა"
-                        formControlName="eduDescription"></textarea>
-                </mat-form-field>
-
-            </div>
-
-        </form>
-
-
-
-
-        <div class="form-buttons-container">
-            <div *ngIf="step == 1"></div>
-            <button mat-flat-button (click)="previousForm()" *ngIf="step != 1" color="primary"
-                class="form-button">ᲣᲙᲐᲜ</button>
-
-            <button mat-flat-button (click)="nextForm()" *ngIf="step != 3" color="primary" class="form-button"
-                type="submit">ᲨᲔᲛᲓᲔᲒᲘ</button>
-
-            <button mat-flat-button (click)="sendForm()" *ngIf="step == 3" color="primary"
-                class="form-button">ᲓᲐᲡᲠᲣᲚᲔᲑᲐ</button>
 
         </div>
-
     </div>
 
-    <div class="preview-container">
-        <div class="general-info-container">
-            <div class="text-info-container">
-                <h1>{{this.generalInfoForm.controls['firstName'].value}}
-                    {{this.generalInfoForm.controls['lastName'].value}}</h1>
-                <div class="contact-info">
-                    <div class="contact-item">
-                        <mat-icon aria-hidden="false" aria-label="Example home icon"
-                            fontIcon="alternate_email"></mat-icon>
-                        {{this.generalInfoForm.controls['email'].value}}
-                    </div>
-                    <div class="contact-item">
-                        <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="phone"></mat-icon>
-                        {{this.generalInfoForm.controls['phone'].value}}
-                    </div>
-                </div>
-            </div>
-        </div>
-        <img src={{imageURL}}>
-    </div>
+    <div class="preview-container"></div>
 
 </div>

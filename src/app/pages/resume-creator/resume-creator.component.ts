@@ -5,6 +5,7 @@ import {
   FormControl,
   FormBuilder,
   Validators,
+  FormArray,
 } from '@angular/forms';
 
 import { HttpClient } from '@angular/common/http';
@@ -15,33 +16,22 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./resume-creator.component.css'],
 })
 export class ResumeCreatorComponent implements OnInit {
+  constructor(
+    private router: Router,
+    private http: HttpClient,
+    private fb: FormBuilder
+  ) {
+    this.getDegrees().subscribe((data) => {
+      this.spinnerData = data;
+    });
+  }
+
   @ViewChild('upload_button') button_upload!: ElementRef<HTMLElement>;
 
-  step: any = 1;
-  imageURL = '';
-  touched = false;
+  formPage = 2;
 
+  form!: FormGroup;
   spinnerData!: any;
-
-  generalInfoForm = new FormGroup({
-    firstName: new FormControl('', [
-      Validators.required,
-      Validators.minLength(2),
-      Validators.pattern('[\u10A0-\u10FF]*'),
-    ]),
-    lastName: new FormControl('', [
-      Validators.required,
-      Validators.minLength(2),
-      Validators.pattern('[\u10A0-\u10FF]*'),
-    ]),
-    about: new FormControl(''),
-    email: new FormControl('', [
-      Validators.required,
-      Validators.email,
-      Validators.pattern('[A-Za-z0-9._-]+@redberry.ge'),
-    ]),
-    phone: new FormControl('', [Validators.required]),
-  });
 
   experienceForm = new FormGroup({
     position: new FormControl('', [
@@ -52,21 +42,47 @@ export class ResumeCreatorComponent implements OnInit {
       Validators.required,
       Validators.minLength(2),
     ]),
-    jobStartDate: new FormControl('', [Validators.required]),
-    jobEndDate: new FormControl('', [Validators.required]),
-    workDescription: new FormControl('', [Validators.required]),
+    start_date: new FormControl('', [Validators.required]),
+    due_date: new FormControl('', [Validators.required]),
+    description: new FormControl('', [Validators.required]),
   });
 
   educationForm = new FormGroup({
-    school: new FormControl('', [Validators.required, Validators.minLength(2)]),
+    institute: new FormControl('', [
+      Validators.required,
+      Validators.minLength(2),
+    ]),
     degree: new FormControl('', [Validators.required]),
-    endDate: new FormControl('', [Validators.required]),
-    eduDescription: new FormControl('', [Validators.required]),
+    due_date: new FormControl('', [Validators.required]),
+    description: new FormControl('', [Validators.required]),
   });
 
-  constructor(private router: Router, private http: HttpClient) {
-    this.getDegrees().subscribe((data) => {
-      this.spinnerData = data;
+  ngOnInit(): void {
+    this.createForm();
+  }
+
+  createForm() {
+    this.form = this.fb.group({
+      name: new FormControl('', [
+        Validators.required,
+        Validators.minLength(2),
+        Validators.pattern('[\u10A0-\u10FF]*'),
+      ]),
+      surname: new FormControl('', [
+        Validators.required,
+        Validators.minLength(2),
+        Validators.pattern('[\u10A0-\u10FF]*'),
+      ]),
+      image: new FormControl('', [Validators.required]),
+      about_me: new FormControl(''),
+      email: new FormControl('', [
+        Validators.required,
+        Validators.email,
+        Validators.pattern('[A-Za-z0-9._-]+@redberry.ge'),
+      ]),
+      phone_number: new FormControl('', [Validators.required]),
+      experiences: this.fb.array([this.experienceForm]),
+      educations: this.fb.array([this.educationForm]),
     });
   }
 
@@ -78,13 +94,13 @@ export class ResumeCreatorComponent implements OnInit {
     this.button_upload.nativeElement.click();
   }
 
-  showImgPreview(e: any) {
+  onImageChange(e: any) {
     if (e.target.files && e.target.files.length > 0) {
       var reader = new FileReader();
       reader.readAsDataURL(e.target.files[0]);
 
       reader.onload = (event: any) => {
-        this.imageURL = event.target.result;
+        this.form.controls['image'].setValue(event.target.result);
       };
     }
   }
@@ -93,33 +109,65 @@ export class ResumeCreatorComponent implements OnInit {
     return this.http.get('https://resume.redberryinternship.ge/api/degrees');
   }
 
-  nextForm() {
-    console.log(this.generalInfoForm.controls['phone'].value);
-
-    if (this.step == 1) {
-      this.generalInfoForm.markAllAsTouched();
-      this.touched = true;
-      if (this.generalInfoForm.valid && this.imageURL.length > 0) {
-        this.step += 1;
-      }
-    } else if (this.step == 2) {
-      this.experienceForm.markAllAsTouched();
-      if (this.experienceForm.valid) {
-        this.step += 1;
-      }
+  isFirstPageValid() {
+    if (
+      this.form.controls['name'].valid &&
+      this.form.controls['surname'].valid &&
+      this.form.controls['image'].valid &&
+      this.form.controls['about_me'].valid &&
+      this.form.controls['email'].valid &&
+      this.form.controls['phone_number'].valid
+    ) {
+      return true;
+    } else {
+      return false;
     }
   }
 
-  previousForm() {
-    this.step -= 1;
+  touchFirstPage() {
+    this.form.controls['name'].markAllAsTouched();
+    this.form.controls['surname'].markAllAsTouched();
+    this.form.controls['image'].markAllAsTouched();
+    this.form.controls['about_me'].markAllAsTouched();
+    this.form.controls['email'].markAllAsTouched();
+    this.form.controls['phone_number'].markAllAsTouched();
   }
 
-  sendForm() {
-    this.educationForm.markAllAsTouched();
-    if (this.educationForm.valid) {
-      alert('good job');
+  nextFormPage() {
+    if (this.formPage == 1) {
+      this.touchFirstPage();
+      if (this.isFirstPageValid()) {
+        console.log('done');
+
+        this.formPage += 1;
+      }
+    } else if (this.formPage == 2) {
+      this.form.controls['experiences'].markAllAsTouched();
+      this.formPage += 1;
     }
   }
 
-  ngOnInit(): void {}
+  previousFormPage() {
+    if (this.formPage != 1) {
+      this.formPage -= 1;
+    }
+  }
+
+  sendForm() {}
+
+  get experiences() {
+    return this.form.get('experiences') as FormArray;
+  }
+
+  addExperienceItem() {
+    this.experiences.push(this.experienceForm);
+  }
+
+  get educations() {
+    return this.form.get('educations') as FormArray;
+  }
+
+  addEducationItem() {
+    this.educations.push(this.educationForm);
+  }
 }
