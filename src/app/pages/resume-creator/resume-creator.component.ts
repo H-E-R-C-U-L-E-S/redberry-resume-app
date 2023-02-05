@@ -19,6 +19,7 @@ export class ResumeCreatorComponent implements OnInit {
 
   step: any = 1;
   imageURL = '';
+  touched = false;
 
   spinnerData!: any;
 
@@ -53,11 +54,14 @@ export class ResumeCreatorComponent implements OnInit {
     ]),
     jobStartDate: new FormControl('', [Validators.required]),
     jobEndDate: new FormControl('', [Validators.required]),
+    workDescription: new FormControl('', [Validators.required]),
   });
 
   educationForm = new FormGroup({
     school: new FormControl('', [Validators.required, Validators.minLength(2)]),
     degree: new FormControl('', [Validators.required]),
+    endDate: new FormControl('', [Validators.required]),
+    eduDescription: new FormControl('', [Validators.required]),
   });
 
   constructor(private router: Router, private http: HttpClient) {
@@ -94,6 +98,7 @@ export class ResumeCreatorComponent implements OnInit {
 
     if (this.step == 1) {
       this.generalInfoForm.markAllAsTouched();
+      this.touched = true;
       if (this.generalInfoForm.valid && this.imageURL.length > 0) {
         this.step += 1;
       }

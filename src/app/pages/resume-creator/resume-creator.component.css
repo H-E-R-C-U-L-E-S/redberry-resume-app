@@ -58,6 +58,7 @@ form input {
 .form-group {
     width: 100%;
     display: flex;
+    align-items: center;
     justify-content: space-between;
 }
 
@@ -97,6 +98,7 @@ mat-form-field {
     margin-left: 20px;
     font-family: helvetica;
     font-weight: 500;
+    background-color: #0E80BF;
     font-size: small;
 }
 
@@ -156,10 +158,25 @@ mat-hint {
 
 .input-container {
     display: flex;
-    width: 100%;
     align-items: center;
+    justify-content: center;
 }
 
 mat-form-field img {
     margin-right: 16px;
+}
+
+::ng-deep .mdc-notched-outline__leading,
+::ng-deep .mdc-notched-outline__trailing {
+    border-color: #BCBCBC !important;
+}
+
+::ng-deep .mdc-text-field--invalid .mdc-notched-outline__leading,
+::ng-deep .mdc-text-field--invalid .mdc-notched-outline__trailing {
+    border-color: #EF5050 !important;
+}
+
+::ng-deep .mat-mdc-form-field.ng-valid .mdc-text-field .mdc-notched-outline__trailing,
+::ng-deep .mat-mdc-form-field.ng-valid .mdc-text-field .mdc-notched-outline__leading {
+    border-color: #98E37E !important;
 }
