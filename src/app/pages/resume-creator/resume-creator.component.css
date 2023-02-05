@@ -67,7 +67,7 @@ form input {
 }
 
 .form-space {
-    width: 8%;
+    width: 16px;
     height: 16px;
 }
 
@@ -152,4 +152,14 @@ mat-hint {
     font-weight: 500;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 16px;
+}
+
+.input-container {
+    display: flex;
+    width: 100%;
+    align-items: center;
+}
+
+mat-form-field img {
+    margin-right: 16px;
 }
