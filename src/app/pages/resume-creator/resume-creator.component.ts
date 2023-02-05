@@ -10,52 +10,35 @@ import {
 
 import { HttpClient } from '@angular/common/http';
 
-@Component({
-  selector: 'app-resume-creator',
-  templateUrl: './resume-creator.component.html',
-  styleUrls: ['./resume-creator.component.css'],
-})
+@Component({ selector: 'app-resume-creator', templateUrl: './resume-creator.component.html', styleUrls: ['./resume-creator.component.css'], })
 export class ResumeCreatorComponent implements OnInit {
-  constructor(
-    private router: Router,
-    private http: HttpClient,
-    private fb: FormBuilder
-  ) {
-    this.getDegrees().subscribe((data) => {
-      this.spinnerData = data;
-    });
-  }
 
   @ViewChild('upload_button') button_upload!: ElementRef<HTMLElement>;
 
-  formPage = 2;
-
+  formPage = 3;
   form!: FormGroup;
   spinnerData!: any;
 
+
   experienceForm = new FormGroup({
-    position: new FormControl('', [
-      Validators.required,
-      Validators.minLength(2),
-    ]),
-    employer: new FormControl('', [
-      Validators.required,
-      Validators.minLength(2),
-    ]),
+    position: new FormControl('', [Validators.required, Validators.minLength(2),]),
+    employer: new FormControl('', [Validators.required, Validators.minLength(2),]),
     start_date: new FormControl('', [Validators.required]),
     due_date: new FormControl('', [Validators.required]),
     description: new FormControl('', [Validators.required]),
   });
 
   educationForm = new FormGroup({
-    institute: new FormControl('', [
-      Validators.required,
-      Validators.minLength(2),
-    ]),
+    institute: new FormControl('', [Validators.required, Validators.minLength(2),]),
     degree: new FormControl('', [Validators.required]),
     due_date: new FormControl('', [Validators.required]),
     description: new FormControl('', [Validators.required]),
   });
+
+
+  constructor(private router: Router, private http: HttpClient, private fb: FormBuilder) {
+    this.getDegrees().subscribe((data) => { this.spinnerData = data; });
+  }
 
   ngOnInit(): void {
     this.createForm();
@@ -63,23 +46,11 @@ export class ResumeCreatorComponent implements OnInit {
 
   createForm() {
     this.form = this.fb.group({
-      name: new FormControl('', [
-        Validators.required,
-        Validators.minLength(2),
-        Validators.pattern('[\u10A0-\u10FF]*'),
-      ]),
-      surname: new FormControl('', [
-        Validators.required,
-        Validators.minLength(2),
-        Validators.pattern('[\u10A0-\u10FF]*'),
-      ]),
+      name: new FormControl('', [Validators.required, Validators.minLength(2), Validators.pattern('[\u10A0-\u10FF]*'),]),
+      surname: new FormControl('', [Validators.required, Validators.minLength(2), Validators.pattern('[\u10A0-\u10FF]*'),]),
       image: new FormControl('', [Validators.required]),
       about_me: new FormControl(''),
-      email: new FormControl('', [
-        Validators.required,
-        Validators.email,
-        Validators.pattern('[A-Za-z0-9._-]+@redberry.ge'),
-      ]),
+      email: new FormControl('', [Validators.required, Validators.email, Validators.pattern('[A-Za-z0-9._-]+@redberry.ge'),]),
       phone_number: new FormControl('', [Validators.required]),
       experiences: this.fb.array([this.experienceForm]),
       educations: this.fb.array([this.educationForm]),
@@ -98,10 +69,7 @@ export class ResumeCreatorComponent implements OnInit {
     if (e.target.files && e.target.files.length > 0) {
       var reader = new FileReader();
       reader.readAsDataURL(e.target.files[0]);
-
-      reader.onload = (event: any) => {
-        this.form.controls['image'].setValue(event.target.result);
-      };
+      reader.onload = (event: any) => { this.form.controls['image'].setValue(event.target.result); };
     }
   }
 
@@ -153,7 +121,7 @@ export class ResumeCreatorComponent implements OnInit {
     }
   }
 
-  sendForm() {}
+  sendForm() { }
 
   get experiences() {
     return this.form.get('experiences') as FormArray;

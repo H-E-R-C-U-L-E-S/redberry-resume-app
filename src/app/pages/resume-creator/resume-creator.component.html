@@ -141,18 +141,85 @@
 
                                     <mat-form-field appearance="outline">
                                         <input matInput type="text" formControlName="position" name="position" placeholder="დეველოპერი, დიზაინერი, ა.შ" />
-                                        <img matSuffix *ngIf="this.experienceForm.controls['position'].valid" src="../../../assets/icons/correct-icon.svg" />
+                                        <img matSuffix *ngIf="experienceForm.controls['position'].valid" src="../../../assets/icons/correct-icon.svg" />
                                     </mat-form-field>
 
-                                    <div class="input-container" *ngIf="this.experienceForm.controls['position'].invalid && this.experienceForm.controls['position'].touched">
+                                    <div class="input-container" *ngIf="experienceForm.controls['position'].invalid && experienceForm.controls['position'].touched">
                                         <div class="form-space"></div>
                                         <img src="../../../assets/icons/error-icon.svg" />
                                         <div class="form-space"></div>
                                     </div>
 
                                 </div>
-                                <mat-hint>უნდა აკმაყოფილებდეს ქართული მობილურის ნომრის ფორმატს</mat-hint>
+                                <mat-hint>მინიმუმ 2 სიმბოლო</mat-hint>
                             </div>
+                        </div>
+
+                        <div class="form-page-item-container">
+                            <div class="form-page-item">
+                                <label for="employer">დამსაქმებელი</label>
+                                <div class="input-container">
+
+                                    <mat-form-field appearance="outline">
+                                        <input matInput type="text" name="employer" formControlName="employer" placeholder="დამსაქმებელი">
+                                        <img matSuffix *ngIf="experienceForm.controls['employer'].valid" src="../../../assets/icons/correct-icon.svg">
+                                    </mat-form-field>
+
+                                    <div class="input-container" *ngIf="experienceForm.controls['employer'].invalid && experienceForm.controls['employer'].touched">
+                                        <div class="form-space"></div>
+                                        <img src="../../../assets/icons/error-icon.svg">
+                                        <div class="form-space"></div>
+                                    </div>
+
+                                </div>
+                                <mat-hint>მინიმუმ 2 სიმბოლო</mat-hint>
+                            </div>
+                        </div>
+
+                        <div class="form-page-item-container">
+                            <div class="form-page-item">
+                                <label for="start_date">დაწყების რიცხვი</label>
+
+                                <mat-form-field appearance="outline">
+                                    <input matInput [matDatepicker]="picker1" name="start_date" formControlName="start_date" placeholder="mm / dd / yy">
+                                    <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker1></mat-datepicker>
+                                </mat-form-field>
+
+                            </div>
+
+                            <div class="form-space"></div>
+                            <div class="form-space"></div>
+                            <div class="form-space"></div>
+                            <div class="form-space"></div>
+
+                            <div class="form-page-item">
+                                <label for="due_date">დამთავრების რიცხვი</label>
+
+                                <mat-form-field appearance="outline">
+                                    <input matInput [matDatepicker]="picker2" name="due_date" formControlName="due_date" placeholder="mm / dd / yy">
+                                    <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker2></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <div class="form-page-item-container">
+                            <div class="form-page-item">
+                                <label>აღწერა</label>
+
+                                <mat-form-field appearance="outline">
+                                    <textarea type="text" matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="5" cdkAutosizeMaxRows="5" formControlName="description"
+                                        placeholder="როლი თანამდებობაზე და ზოგადი აღწერა"></textarea>
+                                </mat-form-field>
+
+                            </div>
+                        </div>
+
+                        <div class="form-page-item">
+                            <div class="form-space"></div>
+                            <div class="form-space"></div>
+                            <div class="form-divider"></div>
                         </div>
 
                     </div>
@@ -160,14 +227,89 @@
                 </ng-container>
             </div>
 
-            <div class="form-page" *ngIf="formPage == 3"></div>
+            <div class="form-page" *ngIf="formPage == 3">
+
+                <ng-container formArrayName="educations" *ngFor="let o of educations.controls;let i = index">
+                    <div [formGroupName]="i">
+                        <div class="form-page-item-container">
+                            <div class="form-page-item">
+                                <label for="institute">სასწავლებელი</label>
+                                <div class="input-container">
+
+                                    <mat-form-field appearance="outline">
+                                        <input matInput type="text" formControlName="institute" name="institute" placeholder="სასწავლებელი" />
+                                        <img matSuffix *ngIf="educationForm.controls['institute'].valid" src="../../../assets/icons/correct-icon.svg" />
+                                    </mat-form-field>
+
+                                    <div class="input-container" *ngIf="educationForm.controls['institute'].invalid && educationForm.controls['institute'].touched">
+                                        <div class="form-space"></div>
+                                        <img src="../../../assets/icons/error-icon.svg" />
+                                        <div class="form-space"></div>
+                                    </div>
+
+                                </div>
+                                <mat-hint>მინიმუმ 2 სიმბოლო</mat-hint>
+                            </div>
+                        </div>
+
+                        <div class="form-page-item-container">
+                            <div class="form-page-item">
+                                <label for="degree">ხარისხი</label>
+
+                                <mat-form-field appearance="outline">
+                                    <mat-select placeholder="აირჩიეთ ხარისხი" formControlName="degree">
+                                        <mat-option *ngFor="let item of spinnerData" [value]="item.title">{{item.title}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+
+                            </div>
+
+                            <div class="form-space"></div>
+                            <div class="form-space"></div>
+                            <div class="form-space"></div>
+                            <div class="form-space"></div>
+
+                            <div class="form-page-item">
+                                <label for="due_date">დამთავრების რიცხვი</label>
+
+                                <mat-form-field appearance="outline">
+                                    <input matInput [matDatepicker]="picker2" name="due_date" formControlName="due_date" placeholder="mm / dd / yy">
+                                    <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker2></mat-datepicker>
+                                </mat-form-field>
+                            </div>
+
+                        </div>
+                        <div class="form-page-item-container">
+                            <div class="form-page-item">
+                                <label>აღწერა</label>
+
+                                <mat-form-field appearance="outline">
+                                    <textarea type="text" matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="5" cdkAutosizeMaxRows="5" formControlName="description"
+                                        placeholder="როლი თანამდებობაზე და ზოგადი აღწერა"></textarea>
+                                </mat-form-field>
+
+
+                            </div>
+                        </div>
+
+                        <div class="form-page-item">
+                            <div class="form-space"></div>
+                            <div class="form-space"></div>
+                            <div class="form-divider"></div>
+                        </div>
+                    </div>
+                </ng-container>
+
+            </div>
         </form>
 
         <div class="buttons">
 
             <div class="add-button-container">
                 <button mat-flat-button color="primary" *ngIf="formPage == 2" class="add-form-button" (click)="addExperienceItem()">მეტი გამოცდილების დამატება</button>
-                <button mat-flat-button color="primary" *ngIf="formPage == 3" class="add-form-button">სხვა სასწავლებლის დამატება</button>
+                <button mat-flat-button color="primary" *ngIf="formPage == 3" class="add-form-button" (click)="addEducationItem()">სხვა სასწავლებლის დამატება</button>
             </div>
 
             <div class="form-buttons-container">
