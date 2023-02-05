@@ -141,10 +141,10 @@
 
                                     <mat-form-field appearance="outline">
                                         <input matInput type="text" formControlName="position" name="position" placeholder="დეველოპერი, დიზაინერი, ა.შ" />
-                                        <img matSuffix *ngIf="experienceForm.controls['position'].valid" src="../../../assets/icons/correct-icon.svg" />
+                                        <img matSuffix *ngIf="getExperience(i).controls['position'].valid" src="../../../assets/icons/correct-icon.svg">
                                     </mat-form-field>
 
-                                    <div class="input-container" *ngIf="experienceForm.controls['position'].invalid && experienceForm.controls['position'].touched">
+                                    <div class="input-container" *ngIf="getExperience(i).controls['position'].invalid  && getExperience(i).controls['position'].touched">
                                         <div class="form-space"></div>
                                         <img src="../../../assets/icons/error-icon.svg" />
                                         <div class="form-space"></div>
@@ -162,15 +162,14 @@
 
                                     <mat-form-field appearance="outline">
                                         <input matInput type="text" name="employer" formControlName="employer" placeholder="დამსაქმებელი">
-                                        <img matSuffix *ngIf="experienceForm.controls['employer'].valid" src="../../../assets/icons/correct-icon.svg">
+                                        <img matSuffix *ngIf="getExperience(i).controls['employer'].valid" src="../../../assets/icons/correct-icon.svg">
                                     </mat-form-field>
 
-                                    <div class="input-container" *ngIf="experienceForm.controls['employer'].invalid && experienceForm.controls['employer'].touched">
+                                    <div class="input-container" *ngIf="getExperience(i).controls['employer'].invalid  && getExperience(i).controls['employer'].touched">
                                         <div class="form-space"></div>
-                                        <img src="../../../assets/icons/error-icon.svg">
+                                        <img src="../../../assets/icons/error-icon.svg" />
                                         <div class="form-space"></div>
                                     </div>
-
                                 </div>
                                 <mat-hint>მინიმუმ 2 სიმბოლო</mat-hint>
                             </div>
@@ -229,7 +228,7 @@
 
             <div class="form-page" *ngIf="formPage == 3">
 
-                <ng-container formArrayName="educations" *ngFor="let o of educations.controls;let i = index">
+                <ng-container formArrayName="educations" *ngFor="let xp of educations.controls;let i = index">
                     <div [formGroupName]="i">
                         <div class="form-page-item-container">
                             <div class="form-page-item">
@@ -238,10 +237,10 @@
 
                                     <mat-form-field appearance="outline">
                                         <input matInput type="text" formControlName="institute" name="institute" placeholder="სასწავლებელი" />
-                                        <img matSuffix *ngIf="educationForm.controls['institute'].valid" src="../../../assets/icons/correct-icon.svg" />
+                                        <img matSuffix *ngIf="getEducation(i).controls['institute'].valid" src="../../../assets/icons/correct-icon.svg" />
                                     </mat-form-field>
 
-                                    <div class="input-container" *ngIf="educationForm.controls['institute'].invalid && educationForm.controls['institute'].touched">
+                                    <div class="input-container" *ngIf="getEducation(i).controls['institute'].invalid  && getEducation(i).controls['institute'].touched">
                                         <div class="form-space"></div>
                                         <img src="../../../assets/icons/error-icon.svg" />
                                         <div class="form-space"></div>

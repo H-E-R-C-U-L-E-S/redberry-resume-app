@@ -15,25 +15,9 @@ export class ResumeCreatorComponent implements OnInit {
 
   @ViewChild('upload_button') button_upload!: ElementRef<HTMLElement>;
 
-  formPage = 3;
+  formPage = 1;
   form!: FormGroup;
-  spinnerData!: any;
-
-
-  experienceForm = new FormGroup({
-    position: new FormControl('', [Validators.required, Validators.minLength(2),]),
-    employer: new FormControl('', [Validators.required, Validators.minLength(2),]),
-    start_date: new FormControl('', [Validators.required]),
-    due_date: new FormControl('', [Validators.required]),
-    description: new FormControl('', [Validators.required]),
-  });
-
-  educationForm = new FormGroup({
-    institute: new FormControl('', [Validators.required, Validators.minLength(2),]),
-    degree: new FormControl('', [Validators.required]),
-    due_date: new FormControl('', [Validators.required]),
-    description: new FormControl('', [Validators.required]),
-  });
+  spinnerData!: any
 
 
   constructor(private router: Router, private http: HttpClient, private fb: FormBuilder) {
@@ -52,8 +36,8 @@ export class ResumeCreatorComponent implements OnInit {
       about_me: new FormControl(''),
       email: new FormControl('', [Validators.required, Validators.email, Validators.pattern('[A-Za-z0-9._-]+@redberry.ge'),]),
       phone_number: new FormControl('', [Validators.required]),
-      experiences: this.fb.array([this.experienceForm]),
-      educations: this.fb.array([this.educationForm]),
+      experiences: this.fb.array([this.experienceForm()]),
+      educations: this.fb.array([this.educationForm()]),
     });
   }
 
@@ -111,7 +95,9 @@ export class ResumeCreatorComponent implements OnInit {
       }
     } else if (this.formPage == 2) {
       this.form.controls['experiences'].markAllAsTouched();
-      this.formPage += 1;
+      if (this.form.controls['experiences'].valid) {
+        this.formPage += 1;
+      }
     }
   }
 
@@ -123,19 +109,58 @@ export class ResumeCreatorComponent implements OnInit {
 
   sendForm() { }
 
+  experienceForm() {
+    return new FormGroup({
+      position: new FormControl('', [Validators.required, Validators.minLength(2),]),
+      employer: new FormControl('', [Validators.required, Validators.minLength(2),]),
+      start_date: new FormControl('', [Validators.required]),
+      due_date: new FormControl('', [Validators.required]),
+      description: new FormControl('', [Validators.required]),
+    });
+  }
+
+  getExperience(i: any) {
+    return this.experiences.at(i) as FormGroup
+  }
+
   get experiences() {
-    return this.form.get('experiences') as FormArray;
+    return (this.form.get('experiences') as FormArray)
   }
 
   addExperienceItem() {
-    this.experiences.push(this.experienceForm);
+    if (this.form.controls['experiences'].valid) {
+      this.experiences.push(this.experienceForm());
+    }
+    else {
+      this.form.controls['experiences'].markAllAsTouched()
+    }
+
   }
 
   get educations() {
-    return this.form.get('educations') as FormArray;
+    return (this.form.get('educations') as FormArray)
   }
 
+  educationForm() {
+    return new FormGroup({
+      institute: new FormControl('', [Validators.required, Validators.minLength(2),]),
+      degree: new FormControl('', [Validators.required]),
+      due_date: new FormControl('', [Validators.required]),
+      description: new FormControl('', [Validators.required]),
+    });
+  }
+
+  getEducation(i: any) {
+    return this.educations.at(i) as FormGroup
+  }
+
+
   addEducationItem() {
-    this.educations.push(this.educationForm);
+    if (this.form.controls['educations'].valid) {
+      this.educations.push(this.educationForm());
+    }
+    else {
+      this.form.controls['educations'].markAllAsTouched()
+    }
   }
 }
