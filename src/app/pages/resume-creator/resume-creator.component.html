@@ -15,7 +15,7 @@
             </div>
         </div>
 
-        <form [formGroup]="form">
+        <form [formGroup]="form" enctype="multipart/form-data">
             <div class="form-page" *ngIf="formPage == 1">
 
                 <div class="form-page-item-container">
@@ -25,7 +25,7 @@
                         <div class="input-container">
 
                             <mat-form-field appearance="outline">
-                                <input matInput formControlName="name" name="name" type="text" placeholder="ანზორ" />
+                                <input matInput formControlName="name" name="name" id="name" type="text" placeholder="ანზორ" />
                                 <img matSuffix *ngIf="form.controls['name'].valid" src="../../../assets/icons/correct-icon.svg" />
                             </mat-form-field>
 
@@ -44,7 +44,7 @@
                         <div class="input-container">
 
                             <mat-form-field appearance="outline">
-                                <input matInput formControlName="surname" name="surname" type="text" placeholder="ანზორ" />
+                                <input matInput formControlName="surname" id="surname" name="surname" type="text" placeholder="მუმლაძე" />
                                 <img matSuffix *ngIf="form.controls['surname'].valid" src="../../../assets/icons/correct-icon.svg" />
                             </mat-form-field>
 
@@ -65,7 +65,7 @@
                 <div class="form-page-item-container">
                     <div class="form-page-item">
 
-                        <input (change)="onImageChange($event)" type="file" hidden="hidden" #upload_button />
+                        <input accept="image/*" id="image" name="image" #fileInput (change)="fileChange($event)" type="file" hidden="hidden" />
                         <span [ngStyle]="{color: form.controls['image'].invalid && form.controls['image'].touched ? '#EF5050' : '#1A1A1A'}">პირადი ფოტოს ატვირთვა*</span>
                         <button type="button" mat-flat-button id="custom-upload-button" (click)="clickUploadButton()" color="primary">ატვირთვა</button>
 
@@ -109,11 +109,11 @@
 
                 <div class="form-page-item-container">
                     <div class="form-page-item">
-                        <label for="phone">მობილურის ნომერი</label>
+                        <label for="phone_number">მობილურის ნომერი</label>
                         <div class="input-container">
 
                             <mat-form-field appearance="outline">
-                                <input matInput type="tel" prefix="+995 " mask="XXX XX XX XX" [validation]='true' formControlName="phone_number" name="phone" placeholder="+995 551 12 34 56" />
+                                <input matInput type="text" [dropSpecialCharacters]="[' ']" mask="+XXX XXX XX XX XX" [validation]='true' formControlName="phone_number" name="phone_number" />
                                 <img matSuffix *ngIf="form.controls['phone_number'].valid" src="../../../assets/icons/correct-icon.svg" />
                             </mat-form-field>
 
@@ -253,12 +253,13 @@
 
                         <div class="form-page-item-container">
                             <div class="form-page-item">
-                                <label for="degree">ხარისხი</label>
+                                <label for="degree_id">ხარისხი</label>
 
                                 <mat-form-field appearance="outline">
-                                    <mat-select placeholder="აირჩიეთ ხარისხი" formControlName="degree">
-                                        <mat-option *ngFor="let item of spinnerData" [value]="item.title">{{item.title}}
+                                    <mat-select placeholder="აირჩიეთ ხარისხი" formControlName="degree_id">
+                                        <mat-option *ngFor="let item of degreeList" [value]="item.id">{{item.title}}
                                         </mat-option>
+                                        <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
                                     </mat-select>
                                 </mat-form-field>
 

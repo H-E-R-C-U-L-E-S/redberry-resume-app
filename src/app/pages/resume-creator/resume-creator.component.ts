@@ -1,43 +1,50 @@
 import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import {
-  FormGroup,
-  FormControl,
-  FormBuilder,
-  Validators,
-  FormArray,
-} from '@angular/forms';
-
+import { FormGroup, FormControl, Validators, FormArray, } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { DatePipe } from '@angular/common';
 
-@Component({ selector: 'app-resume-creator', templateUrl: './resume-creator.component.html', styleUrls: ['./resume-creator.component.css'], })
+
+@Component({
+  selector: 'app-resume-creator', templateUrl: './resume-creator.component.html',
+  styleUrls: ['./resume-creator.component.css'], providers: [DatePipe]
+})
+
 export class ResumeCreatorComponent implements OnInit {
 
-  @ViewChild('upload_button') button_upload!: ElementRef<HTMLElement>;
+  @ViewChild('fileInput') fileInput!: ElementRef;
 
   formPage = 1;
   form!: FormGroup;
-  spinnerData!: any
+  degreeList: any;
 
-
-  constructor(private router: Router, private http: HttpClient, private fb: FormBuilder) {
-    this.getDegrees().subscribe((data) => { this.spinnerData = data; });
+  constructor(private router: Router, private http: HttpClient, private datePipe: DatePipe) {
+    this.getDegrees().subscribe((data) => { this.degreeList = data; });
   }
 
   ngOnInit(): void {
+
     this.createForm();
+
+    const value = JSON.parse(localStorage.getItem('formValue')!);
+
+    this.form.patchValue(value)
+    this.form.valueChanges.subscribe(value => {
+      localStorage.setItem('formValue', JSON.stringify(this.form.value));
+    });
+
   }
 
   createForm() {
-    this.form = this.fb.group({
+    this.form = new FormGroup({
       name: new FormControl('', [Validators.required, Validators.minLength(2), Validators.pattern('[\u10A0-\u10FF]*'),]),
       surname: new FormControl('', [Validators.required, Validators.minLength(2), Validators.pattern('[\u10A0-\u10FF]*'),]),
-      image: new FormControl('', [Validators.required]),
+      image: new FormControl(null, [Validators.required]),
       about_me: new FormControl(''),
-      email: new FormControl('', [Validators.required, Validators.email, Validators.pattern('[A-Za-z0-9._-]+@redberry.ge'),]),
-      phone_number: new FormControl('', [Validators.required]),
-      experiences: this.fb.array([this.experienceForm()]),
-      educations: this.fb.array([this.educationForm()]),
+      email: new FormControl('', [Validators.required, Validators.email, Validators.pattern(/^[a-zA-Z0-9._%+-]+@redberry.ge$/),]),
+      phone_number: new FormControl('+995 ', [Validators.required, Validators.pattern(/^\+995\d{9}$/)]),
+      experiences: new FormArray([this.experienceForm()]),
+      educations: new FormArray([this.educationForm()]),
     });
   }
 
@@ -46,14 +53,14 @@ export class ResumeCreatorComponent implements OnInit {
   }
 
   clickUploadButton() {
-    this.button_upload.nativeElement.click();
+    this.fileInput.nativeElement.click();
   }
 
-  onImageChange(e: any) {
-    if (e.target.files && e.target.files.length > 0) {
-      var reader = new FileReader();
-      reader.readAsDataURL(e.target.files[0]);
-      reader.onload = (event: any) => { this.form.controls['image'].setValue(event.target.result); };
+  fileChange(event: any) {
+    let reader = new FileReader();
+    reader.readAsDataURL(event.target.files[0])
+    reader.onload = (e: any) => {
+      this.form.controls['image'].setValue(event.target.files[0])
     }
   }
 
@@ -89,8 +96,6 @@ export class ResumeCreatorComponent implements OnInit {
     if (this.formPage == 1) {
       this.touchFirstPage();
       if (this.isFirstPageValid()) {
-        console.log('done');
-
         this.formPage += 1;
       }
     } else if (this.formPage == 2) {
@@ -107,14 +112,54 @@ export class ResumeCreatorComponent implements OnInit {
     }
   }
 
-  sendForm() { }
+
+  sendForm() {
+    const formData = new FormData();
+
+    formData.append('name', this.form.controls['name'].value);
+    formData.append('surname', this.form.controls['surname'].value);
+    formData.append('about_me', this.form.controls['about_me'].value);
+    formData.append('email', this.form.controls['email'].value);
+    formData.append('phone_number', this.form.controls['phone_number'].value);
+    formData.append('image', this.form.controls['image'].value);
+
+    for (let i = 0; i < this.experiences.length; i++) {
+      formData.append(`experiences[${i}][position]`, this.experiences.at(i).get('position')!.value);
+      formData.append(`experiences[${i}][employer]`, this.experiences.at(i).get('employer')!.value);
+      formData.append(`experiences[${i}][start_date]`, this.formatedDate(this.experiences.at(i).get('start_date')!.value));
+      formData.append(`experiences[${i}][due_date]`, this.formatedDate(this.experiences.at(i).get('due_date')!.value));
+      formData.append(`experiences[${i}][description]`, this.experiences.at(i).get('description')!.value);
+    }
+
+
+    for (let i = 0; i < this.educations.length; i++) {
+      formData.append(`educations[${i}][institute]`, this.educations.at(i).get('institute')!.value);
+      formData.append(`educations[${i}][degree_id]`, this.educations.at(i).get('degree_id')!.value);
+      formData.append(`educations[${i}][due_date]`, this.formatedDate(this.educations.at(i).get('due_date')!.value));
+      formData.append(`educations[${i}][description]`, this.educations.at(i).get('description')!.value);
+    }
+
+    this.http.post("https://resume.redberryinternship.ge/api/cvs", formData)
+      .subscribe(
+        response => {
+          console.log(response.toString)
+        },
+        error => {
+          console.error(error)
+        }
+      )
+  }
+
+  formatedDate(d: any) {
+    return this.datePipe.transform(d, 'yyyy/MM/dd') as string;
+  }
 
   experienceForm() {
     return new FormGroup({
       position: new FormControl('', [Validators.required, Validators.minLength(2),]),
       employer: new FormControl('', [Validators.required, Validators.minLength(2),]),
-      start_date: new FormControl('', [Validators.required]),
-      due_date: new FormControl('', [Validators.required]),
+      start_date: new FormControl(null, [Validators.required]),
+      due_date: new FormControl(null, [Validators.required]),
       description: new FormControl('', [Validators.required]),
     });
   }
@@ -134,7 +179,6 @@ export class ResumeCreatorComponent implements OnInit {
     else {
       this.form.controls['experiences'].markAllAsTouched()
     }
-
   }
 
   get educations() {
@@ -144,16 +188,11 @@ export class ResumeCreatorComponent implements OnInit {
   educationForm() {
     return new FormGroup({
       institute: new FormControl('', [Validators.required, Validators.minLength(2),]),
-      degree: new FormControl('', [Validators.required]),
-      due_date: new FormControl('', [Validators.required]),
+      degree_id: new FormControl('', [Validators.required]),
+      due_date: new FormControl(null, [Validators.required]),
       description: new FormControl('', [Validators.required]),
     });
   }
-
-  getEducation(i: any) {
-    return this.educations.at(i) as FormGroup
-  }
-
 
   addEducationItem() {
     if (this.form.controls['educations'].valid) {
@@ -163,4 +202,9 @@ export class ResumeCreatorComponent implements OnInit {
       this.form.controls['educations'].markAllAsTouched()
     }
   }
+
+  getEducation(i: any) {
+    return this.educations.at(i) as FormGroup;
+  }
+
 }

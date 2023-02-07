@@ -39,4 +39,4 @@ import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
   providers: [provideNgxMask()],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }
