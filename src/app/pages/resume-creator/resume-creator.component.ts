@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators, FormArray, } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { DatePipe } from '@angular/common';
+import { SharedService } from 'src/app/services/shared-service';
 
 
 @Component({
@@ -18,31 +19,57 @@ export class ResumeCreatorComponent implements OnInit {
   form!: FormGroup;
   degreeList: any;
 
-  constructor(private router: Router, private http: HttpClient, private datePipe: DatePipe) {
+  constructor(private router: Router, private http: HttpClient, private datePipe: DatePipe, private sharedService: SharedService) {
     this.getDegrees().subscribe((data) => { this.degreeList = data; });
   }
 
   ngOnInit(): void {
+    const storedData = JSON.parse(localStorage.getItem('formData')!);
 
     this.createForm();
 
-    const value = JSON.parse(localStorage.getItem('formValue')!);
+    if (storedData) {
+      this.form.controls['name'].setValue(storedData.name)
+      this.form.controls['surname'].setValue(storedData.surname)
+      this.form.controls['image'].setValue(storedData.image)
+      this.form.controls['about_me'].setValue(storedData.about_me)
+      this.form.controls['email'].setValue(storedData.email)
+      this.form.controls['phone_number'].setValue(storedData.phone_number)
 
-    this.form.patchValue(value)
+      this.experiences.clear()
+      let i = 0
+      storedData.experiences.forEach((element: any) => {
+        this.experiences.push(this.experienceForm())
+        this.experiences.at(i).setValue(element)
+        i++
+      });
+
+      this.educations.clear()
+      let j = 0;
+      storedData.educations.forEach((element: any) => {
+        this.educations.push(this.educationForm())
+        this.educations.at(j).setValue(element)
+        i++
+      });
+
+      this.sharedService.updateData(this.form.value);
+
+    }
+
     this.form.valueChanges.subscribe(value => {
-      localStorage.setItem('formValue', JSON.stringify(this.form.value));
+      this.sharedService.updateData(this.form.value);
+      localStorage.setItem('formData', JSON.stringify(this.form.value));
     });
-
   }
 
   createForm() {
     this.form = new FormGroup({
-      name: new FormControl('', [Validators.required, Validators.minLength(2), Validators.pattern('[\u10A0-\u10FF]*'),]),
-      surname: new FormControl('', [Validators.required, Validators.minLength(2), Validators.pattern('[\u10A0-\u10FF]*'),]),
+      name: new FormControl('', [Validators.required, Validators.minLength(2), Validators.pattern('^[\u10A0-\u10FF]+$'),]),
+      surname: new FormControl('', [Validators.required, Validators.minLength(2), Validators.pattern('^[\u10A0-\u10FF]+$'),]),
       image: new FormControl(null, [Validators.required]),
       about_me: new FormControl(''),
       email: new FormControl('', [Validators.required, Validators.email, Validators.pattern(/^[a-zA-Z0-9._%+-]+@redberry.ge$/),]),
-      phone_number: new FormControl('+995 ', [Validators.required, Validators.pattern(/^\+995\d{9}$/)]),
+      phone_number: new FormControl('', [Validators.required, Validators.pattern(/^(\+995)\s\d{3}\s\d{2}\s\d{2}\s\d{2}$/)]),
       experiences: new FormArray([this.experienceForm()]),
       educations: new FormArray([this.educationForm()]),
     });
@@ -60,7 +87,7 @@ export class ResumeCreatorComponent implements OnInit {
     let reader = new FileReader();
     reader.readAsDataURL(event.target.files[0])
     reader.onload = (e: any) => {
-      this.form.controls['image'].setValue(event.target.files[0])
+      this.form.controls['image'].setValue(e.target.result)
     }
   }
 
@@ -84,15 +111,17 @@ export class ResumeCreatorComponent implements OnInit {
   }
 
   touchFirstPage() {
-    this.form.controls['name'].markAllAsTouched();
-    this.form.controls['surname'].markAllAsTouched();
-    this.form.controls['image'].markAllAsTouched();
-    this.form.controls['about_me'].markAllAsTouched();
-    this.form.controls['email'].markAllAsTouched();
-    this.form.controls['phone_number'].markAllAsTouched();
+    this.form.controls['name'].markAsTouched();
+    this.form.controls['surname'].markAsTouched();
+    this.form.controls['image'].markAsTouched();
+    this.form.controls['about_me'].markAsTouched();
+    this.form.controls['email'].markAsTouched();
+    this.form.controls['phone_number'].markAsTouched();
   }
 
   nextFormPage() {
+    console.log(this.form.value);
+
     if (this.formPage == 1) {
       this.touchFirstPage();
       if (this.isFirstPageValid()) {
@@ -120,8 +149,8 @@ export class ResumeCreatorComponent implements OnInit {
     formData.append('surname', this.form.controls['surname'].value);
     formData.append('about_me', this.form.controls['about_me'].value);
     formData.append('email', this.form.controls['email'].value);
-    formData.append('phone_number', this.form.controls['phone_number'].value);
-    formData.append('image', this.form.controls['image'].value);
+    formData.append('phone_number', this.formatedPhone(this.form.controls['phone_number'].value));
+    formData.append('image', this.dataURItoBlob(this.form.controls['image'].value));
 
     for (let i = 0; i < this.experiences.length; i++) {
       formData.append(`experiences[${i}][position]`, this.experiences.at(i).get('position')!.value);
@@ -142,7 +171,8 @@ export class ResumeCreatorComponent implements OnInit {
     this.http.post("https://resume.redberryinternship.ge/api/cvs", formData)
       .subscribe(
         response => {
-          console.log(response.toString)
+          this.goToPage('resume-completed')
+          //localStorage.clear();
         },
         error => {
           console.error(error)
@@ -152,6 +182,19 @@ export class ResumeCreatorComponent implements OnInit {
 
   formatedDate(d: any) {
     return this.datePipe.transform(d, 'yyyy/MM/dd') as string;
+  }
+
+  formatedPhone(p: any) {
+    return p.replace(/\s/g, "");
+  }
+
+  dataURItoBlob(dataURI: any) {
+    var binary = atob(dataURI.split(',')[1]);
+    var array = [];
+    for (var i = 0; i < binary.length; i++) {
+      array.push(binary.charCodeAt(i));
+    }
+    return new Blob([new Uint8Array(array)], { type: 'image/jpeg' });
   }
 
   experienceForm() {
@@ -181,6 +224,10 @@ export class ResumeCreatorComponent implements OnInit {
     }
   }
 
+  deleteExperienceItem() {
+    this.experiences.removeAt(this.form.controls['experiences'].value.length - 1)
+  }
+
   get educations() {
     return (this.form.get('educations') as FormArray)
   }
@@ -201,6 +248,10 @@ export class ResumeCreatorComponent implements OnInit {
     else {
       this.form.controls['educations'].markAllAsTouched()
     }
+  }
+
+  deleteEducationItem() {
+    this.educations.removeAt(this.form.controls['educations'].value.length - 1)
   }
 
   getEducation(i: any) {

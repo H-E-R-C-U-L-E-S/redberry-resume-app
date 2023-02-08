@@ -113,7 +113,7 @@
                         <div class="input-container">
 
                             <mat-form-field appearance="outline">
-                                <input matInput type="text" [dropSpecialCharacters]="[' ']" mask="+XXX XXX XX XX XX" [validation]='true' formControlName="phone_number" name="phone_number" />
+                                <input matInput type="text" prefix="+995 " [dropSpecialCharacters]="false" mask="XXX XX XX XX" [validation]='true' formControlName="phone_number" name="phone_number" />
                                 <img matSuffix *ngIf="form.controls['phone_number'].valid" src="../../../assets/icons/correct-icon.svg" />
                             </mat-form-field>
 
@@ -309,7 +309,12 @@
 
             <div class="add-button-container">
                 <button mat-flat-button color="primary" *ngIf="formPage == 2" class="add-form-button" (click)="addExperienceItem()">მეტი გამოცდილების დამატება</button>
+                <button mat-flat-button color="warn" *ngIf="formPage == 2 && this.form.controls['experiences'].value.length > 1" class="delete-form-button" (click)="deleteExperienceItem()">ბოლო
+                    გამოცდილების წაშლა</button>
+
                 <button mat-flat-button color="primary" *ngIf="formPage == 3" class="add-form-button" (click)="addEducationItem()">სხვა სასწავლებლის დამატება</button>
+                <button mat-flat-button color="warn" *ngIf="formPage == 3 && this.form.controls['educations'].value.length > 1" class="delete-form-button" (click)="deleteEducationItem()">ბოლო
+                    სასწავლებლის წაშლა</button>
             </div>
 
             <div class="form-buttons-container">
@@ -330,6 +335,8 @@
         </div>
     </div>
 
-    <div class="preview-container"></div>
+    <div class="preview-container">
+        <app-resume-preview></app-resume-preview>
+    </div>
 
 </div>

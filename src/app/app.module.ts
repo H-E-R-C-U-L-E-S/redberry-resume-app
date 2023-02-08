@@ -17,9 +17,12 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { HttpClientModule } from '@angular/common/http';
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
+import { ResumeCompletedComponent } from './pages/resume-completed/resume-completed.component';
+import { ResumePreviewComponent } from './pages/resume-preview/resume-preview.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
-  declarations: [AppComponent, WelcomePageComponent, ResumeCreatorComponent],
+  declarations: [AppComponent, WelcomePageComponent, ResumeCreatorComponent, ResumeCompletedComponent, ResumePreviewComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -35,6 +38,7 @@ import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
     HttpClientModule,
     NgxMaskDirective,
     NgxMaskPipe,
+    MatDialogModule
   ],
   providers: [provideNgxMask()],
   bootstrap: [AppComponent],

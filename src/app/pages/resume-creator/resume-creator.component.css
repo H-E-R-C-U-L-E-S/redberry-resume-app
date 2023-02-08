@@ -11,7 +11,6 @@
 
 .preview-container {
     width: 44%;
-    display: flex;
     padding: 64px;
 }
 
@@ -146,6 +145,14 @@ mat-hint {
     min-height: 48px;
     background-color: #62A1EB !important;
     font-family: helvetica;
+    font-size: 16px;
+    font-weight: normal;
+}
+
+.delete-form-button {
+    min-height: 48px;
+    font-family: helvetica;
+    font-size: 16px;
     font-weight: normal;
 }
 
@@ -184,7 +191,7 @@ mat-form-field img {
 
 
 .form-divider {
-    height: 2px;
+    height: 1.2px;
     width: 100%;
     background-color: #C1C1C1;
 }
