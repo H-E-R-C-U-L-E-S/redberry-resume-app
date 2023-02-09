@@ -163,7 +163,7 @@ export class ResumeCreatorComponent implements OnInit {
 
     for (let i = 0; i < this.educations.length; i++) {
       formData.append(`educations[${i}][institute]`, this.educations.at(i).get('institute')!.value);
-      formData.append(`educations[${i}][degree_id]`, this.educations.at(i).get('degree_id')!.value);
+      formData.append(`educations[${i}][degree_id]`, this.educations.at(i).get('degree')!.value.id);
       formData.append(`educations[${i}][due_date]`, this.formatedDate(this.educations.at(i).get('due_date')!.value));
       formData.append(`educations[${i}][description]`, this.educations.at(i).get('description')!.value);
     }
@@ -235,7 +235,7 @@ export class ResumeCreatorComponent implements OnInit {
   educationForm() {
     return new FormGroup({
       institute: new FormControl('', [Validators.required, Validators.minLength(2),]),
-      degree_id: new FormControl('', [Validators.required]),
+      degree: new FormControl('', [Validators.required]),
       due_date: new FormControl(null, [Validators.required]),
       description: new FormControl('', [Validators.required]),
     });

@@ -2,41 +2,59 @@
     <div class="general-info-container">
         <div class="header-container">
             <h1>{{data.name}} {{data.surname}}</h1>
-            <h3>{{data.email}}</h3>
-            <h3>{{data.phone_number}}</h3>
-            <h2 class="sub-title" *ngIf="data.about_me.length > 0">ᲩᲔᲛ ᲨᲔᲡᲐᲮᲔᲑ</h2>
-            <p>{{data.about_me}}</p>
+            <div class="icon-info-container">
+                <img src="../../../assets/icons/email-icon.svg">
+                <h3>{{data.email}}</h3>
+            </div>
+            <div class="icon-info-container">
+                <img src="../../../assets/icons/phone-icon.svg">
+                <h3>{{data.phone_number}}</h3>
+            </div>
+            <h2 class="sub-title" *ngIf="data.about_me">ᲩᲔᲛ ᲨᲔᲡᲐᲮᲔᲑ</h2>
+            <div class="text-container">
+                <p>{{data.about_me}}</p>
+            </div>
         </div>
 
         <img *ngIf="data.image != null" src="{{data.image}}">
 
     </div>
 
-    <div class="divider"></div>
-
-    <h2 class="sub-title"> ᲒᲐᲛᲝᲪᲓᲘᲚᲔᲑᲐ</h2>
-
-    <ng-container *ngFor="let xp of data.experiences;let i = index">
-        <div>
-            <h3>{{xp.position}}, {{xp.employer}}</h3>
-            <h3>{{xp.start_date}} {{xp.due_date}}</h3>
-            <p>{{xp.description}}</p>
-        </div>
+    <div *ngIf="data.experiences[0].position || data.experiences[0].employer || data.experiences[0].start_date || data.experiences[0].due_date|| data.experiences[0].description"
+        class="subtitle-container">
         <div class="divider"></div>
+
+        <h2 class="sub-title">ᲒᲐᲛᲝᲪᲓᲘᲚᲔᲑᲐ</h2>
+    </div>
+    <ng-container *ngFor="let xp of data.experiences;let i = index">
+
+
+        <div class="text-container {{i}}">
+            <h3 *ngIf="xp.position || xp.employer">{{xp.position}}, {{xp.employer}}</h3>
+            <p class="ss">{{formatedDate(xp.start_date)}} - {{formatedDate(xp.due_date)}}</p>
+            <p class="default-text">{{xp.description}}</p>
+            <div class="divider" *ngIf="data.experiences.length > i+1"></div>
+        </div>
+
 
     </ng-container>
 
-    <div class="divider"></div>
 
-    <h2 class="sub-title"> ᲒᲐᲜᲐᲗᲚᲔᲑᲐ</h2>
-
-    <ng-container *ngFor="let xp of data.educations;let i = index">
-        <div>
-            <h3>{{xp.institute}}, {{xp.degree_id}}</h3>
-            <h3>{{xp.due_date}}</h3>
-            <p>{{xp.description}}</p>
-        </div>
+    <div *ngIf="data.educations[0].institute || data.educations[0].degree || data.educations[0].due_date || data.educations[0].description" class="subtitle-container">
         <div class="divider"></div>
+
+        <h2 class="sub-title">ᲒᲐᲜᲐᲗᲚᲔᲑᲐ</h2>
+    </div>
+    <ng-container *ngFor="let xp of data.educations;let i = index">
+
+
+        <div class="text-container {{i}}">
+            <h3 *ngIf="xp.institute || xp.degree">{{xp.institute}}, {{xp.degree.title}}</h3>
+            <p class="ss">{{formatedDate(xp.due_date)}}</p>
+            <p class="default-text">{{xp.description}}</p>
+            <div class="divider" *ngIf="data.educations.length > i+1"></div>
+        </div>
+
 
     </ng-container>
 

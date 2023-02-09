@@ -22,10 +22,54 @@
     color: #F93B1D;
     font-size: large;
     letter-spacing: 1px;
+    margin-top: 24px;
+    margin-bottom: 6px;
+}
+
+.text-container {
+    font-size: medium;
+    font-family: helvetica;
+    color: #1A1A1A;
+}
+
+.text-container h3 {
+    font-weight: bold;
+    font-family: helvetica;
+    margin: 0;
+}
+
+.text-container .ss {
+    color: #909090;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 400;
+    font-style: italic;
+}
+
+.default-text {
+    color: #1A1A1A;
+    font-family: helvetica;
+    font-style: normal;
+
 }
 
 .header-container {
     width: 58%;
+    margin-top: 32px;
+}
+
+.icon-info-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.icon-info-container h3 {
+    color: #1A1A1A;
+    margin: 0;
+    margin-left: 12px;
+    font-size: larger;
+    font-weight: normal;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .general-info-container img {

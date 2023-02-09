@@ -1,0 +1,14 @@
+.main-container {
+    width: 100%;
+    height: max-content;
+    display: flex;
+    justify-content: center;
+    padding-top: 64px;
+    padding-bottom: 64px;
+}
+
+.main-item {
+    width: 46%;
+    border: solid black 0.8px;
+    padding: 64px;
+}

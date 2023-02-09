@@ -1,4 +1,4 @@
-import { Component, ViewChild, TemplateRef } from '@angular/core';
+import { Component, ViewChild, TemplateRef, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({
@@ -6,8 +6,11 @@ import { MatDialog } from '@angular/material/dialog';
   templateUrl: './resume-completed.component.html',
   styleUrls: ['./resume-completed.component.css']
 })
-export class ResumeCompletedComponent {
+export class ResumeCompletedComponent implements OnInit {
   constructor(private dialog: MatDialog) { }
+  ngOnInit(): void {
+    this.openDialog()
+  }
   openDialog() {
     this.dialog.open(this.dialogContent, {
       panelClass: 'no-blur-background',

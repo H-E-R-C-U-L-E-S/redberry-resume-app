@@ -256,8 +256,8 @@
                                 <label for="degree_id">ხარისხი</label>
 
                                 <mat-form-field appearance="outline">
-                                    <mat-select placeholder="აირჩიეთ ხარისხი" formControlName="degree_id">
-                                        <mat-option *ngFor="let item of degreeList" [value]="item.id">{{item.title}}
+                                    <mat-select placeholder="აირჩიეთ ხარისხი" formControlName="degree">
+                                        <mat-option *ngFor="let item of degreeList" [value]="item">{{item.title}}
                                         </mat-option>
                                         <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
                                     </mat-select>
