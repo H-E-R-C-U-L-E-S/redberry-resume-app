@@ -1,5 +1,6 @@
 import { Component, ViewChild, TemplateRef, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatCard } from '@angular/material/card';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-resume-completed',
@@ -7,16 +8,20 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrls: ['./resume-completed.component.css']
 })
 export class ResumeCompletedComponent implements OnInit {
-  constructor(private dialog: MatDialog) { }
+  showCard = true;
+
+  constructor(private router: Router) { }
+
   ngOnInit(): void {
-    this.openDialog()
+
   }
-  openDialog() {
-    this.dialog.open(this.dialogContent, {
-      panelClass: 'no-blur-background',
-      position: { top: '10px', right: '10px' },
-      hasBackdrop: false,
-    });
+
+  hideCard() {
+    this.showCard = false;
   }
-  @ViewChild('dialogContent', { static: true }) dialogContent!: TemplateRef<any>;
+
+  goToPage(pageName: string): void {
+    this.router.navigate([pageName], { replaceUrl: true });
+  }
+
 }

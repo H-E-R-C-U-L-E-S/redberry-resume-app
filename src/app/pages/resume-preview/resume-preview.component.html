@@ -2,11 +2,11 @@
     <div class="general-info-container">
         <div class="header-container">
             <h1>{{data.name}} {{data.surname}}</h1>
-            <div class="icon-info-container">
+            <div class="icon-info-container" *ngIf="data.email">
                 <img src="../../../assets/icons/email-icon.svg">
                 <h3>{{data.email}}</h3>
             </div>
-            <div class="icon-info-container">
+            <div class="icon-info-container" *ngIf="data.phone_number">
                 <img src="../../../assets/icons/phone-icon.svg">
                 <h3>{{data.phone_number}}</h3>
             </div>
@@ -16,7 +16,7 @@
             </div>
         </div>
 
-        <img *ngIf="data.image != null" src="{{data.image}}">
+        <img class="profile-image" *ngIf="data.image != null" src="{{data.image}}">
 
     </div>
 
@@ -31,7 +31,7 @@
 
         <div class="text-container {{i}}">
             <h3 *ngIf="xp.position || xp.employer">{{xp.position}}, {{xp.employer}}</h3>
-            <p class="ss">{{formatedDate(xp.start_date)}} - {{formatedDate(xp.due_date)}}</p>
+            <p class="ss" *ngIf="xp.start_date || xp.due_date">{{formatedDate(xp.start_date)}} - {{formatedDate(xp.due_date)}}</p>
             <p class="default-text">{{xp.description}}</p>
             <div class="divider" *ngIf="data.experiences.length > i+1"></div>
         </div>
@@ -47,19 +47,19 @@
     </div>
     <ng-container *ngFor="let xp of data.educations;let i = index">
 
-
         <div class="text-container {{i}}">
-            <h3 *ngIf="xp.institute || xp.degree">{{xp.institute}}, {{xp.degree.title}}</h3>
+            <div class="container">
+                <h3 *ngIf="xp.institute">{{xp.institute}}</h3>
+                <h3 *ngIf="xp.degree">, {{xp.degree.title}}</h3>
+            </div>
             <p class="ss">{{formatedDate(xp.due_date)}}</p>
             <p class="default-text">{{xp.description}}</p>
             <div class="divider" *ngIf="data.educations.length > i+1"></div>
         </div>
 
-
     </ng-container>
 
-    <div class="footer-container">
-        <img src="../../../assets/logo.svg">
-    </div>
-
+</div>
+<div class="footer-container">
+    <img src="../../../assets/logo.svg">
 </div>

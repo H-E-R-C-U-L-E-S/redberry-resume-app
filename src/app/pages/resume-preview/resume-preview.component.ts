@@ -21,4 +21,5 @@ export class ResumePreviewComponent implements OnInit {
   formatedDate(d: any) {
     return this.datePipe.transform(d, 'yyyy/MM/dd') as string;
   }
+
 }

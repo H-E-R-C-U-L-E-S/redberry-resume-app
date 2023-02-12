@@ -19,7 +19,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 import { ResumeCompletedComponent } from './pages/resume-completed/resume-completed.component';
 import { ResumePreviewComponent } from './pages/resume-preview/resume-preview.component';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
   declarations: [AppComponent, WelcomePageComponent, ResumeCreatorComponent, ResumeCompletedComponent, ResumePreviewComponent],
@@ -38,7 +38,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     HttpClientModule,
     NgxMaskDirective,
     NgxMaskPipe,
-    MatDialogModule
+    MatCardModule
   ],
   providers: [provideNgxMask()],
   bootstrap: [AppComponent],

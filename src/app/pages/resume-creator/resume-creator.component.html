@@ -253,13 +253,11 @@
 
                         <div class="form-page-item-container">
                             <div class="form-page-item">
-                                <label for="degree_id">ხარისხი</label>
+                                <label for="degree">ხარისხი</label>
 
                                 <mat-form-field appearance="outline">
-                                    <mat-select placeholder="აირჩიეთ ხარისხი" formControlName="degree">
-                                        <mat-option *ngFor="let item of degreeList" [value]="item">{{item.title}}
-                                        </mat-option>
-                                        <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                                    <mat-select placeholder="აირჩიეთ ხარისხი" formControlName="degree" [compareWith]="compareObjects">
+                                        <mat-option *ngFor="let item of degreeList" [value]="item">{{item.title}}</mat-option>
                                     </mat-select>
                                 </mat-form-field>
 
@@ -287,7 +285,7 @@
 
                                 <mat-form-field appearance="outline">
                                     <textarea type="text" matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="5" cdkAutosizeMaxRows="5" formControlName="description"
-                                        placeholder="როლი თანამდებობაზე და ზოგადი აღწერა"></textarea>
+                                        placeholder="განათლების აღწერა"></textarea>
                                 </mat-form-field>
 
 

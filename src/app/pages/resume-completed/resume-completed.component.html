@@ -1,13 +1,22 @@
-<ng-template #dialogContent let-dialogRef="dialogRef">
-    <h2 mat-dialog-content>რეზიუმე წარმატებით გაიგზავნა 🎉</h2>
-    <mat-dialog-actions>
-        <button mat-button [mat-dialog-close]="true">Download</button>
-    </mat-dialog-actions>
-</ng-template>
-
+<div class="buttons-container">
+    <button mat-icon-button (click)="goToPage('')">
+        <mat-icon>keyboard_arrow_left</mat-icon>
+    </button>
+</div>
 <div class="main-container">
     <div class="main-item">
         <app-resume-preview></app-resume-preview>
     </div>
-
 </div>
+
+<mat-card class="top-right-corner card-container" *ngIf="showCard">
+    <div class="card-header">
+        <button mat-icon-button class="close-button" (click)="hideCard()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+
+    <mat-card-content>
+        <h2>რეზიუმე წარმატებით <br> გაიგზავნა 🎉</h2>
+    </mat-card-content>
+</mat-card>

@@ -37,7 +37,7 @@
 
 .title-container h2 {
     font-weight: 700;
-    font-family: helvetica;
+    font-family: Arial, Helvetica, sans-serif;
     margin-bottom: 6px;
     color: #1A1A1A;
 }
@@ -46,11 +46,11 @@ form {
     margin-top: 16px;
     margin-left: 14%;
     width: 86%;
-    font-family: helvetica;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 form input {
-    font-family: helvetica;
+    font-family: Arial, Helvetica, sans-serif;
     font-weight: normal;
 }
 
@@ -85,33 +85,33 @@ mat-form-field {
     margin-bottom: 8px;
     font-weight: bold;
     color: #1A1A1A;
-    font-family: helvetica;
+    font-family: Arial, Helvetica, sans-serif;
     font-size: larger;
 }
 
 
 .form-page-item span {
-    font-family: helvetica;
+    font-family: Arial, Helvetica, sans-serif;
     font-size: medium;
     font-weight: bold;
 }
 
 #custom-upload-button {
     margin-left: 20px;
-    font-family: helvetica;
+    font-family: Arial, Helvetica, sans-serif;
     font-weight: normal;
     background-color: #0E80BF;
 }
 
 form textarea {
     width: 100%;
-    font-family: helvetica;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 mat-hint {
     display: inline-block;
     margin-top: 6px;
-    font-family: helvetica;
+    font-family: Arial, Helvetica, sans-serif;
     font-size: smaller;
     font-weight: 500;
     color: #2E2E2E;
@@ -144,14 +144,14 @@ mat-hint {
 .add-form-button {
     min-height: 48px;
     background-color: #62A1EB !important;
-    font-family: helvetica;
+    font-family: Arial, Helvetica, sans-serif;
     font-size: 16px;
     font-weight: normal;
 }
 
 .delete-form-button {
     min-height: 48px;
-    font-family: helvetica;
+    font-family: Arial, Helvetica, sans-serif;
     font-size: 16px;
     font-weight: normal;
 }
@@ -160,7 +160,7 @@ mat-hint {
     background-color: #6B40E3 !important;
     min-height: 48px;
     font-weight: normal;
-    font-family: helvetica;
+    font-family: Arial, Helvetica, sans-serif;
     font-size: medium;
 }
 

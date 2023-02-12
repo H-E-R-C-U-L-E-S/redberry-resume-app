@@ -25,10 +25,13 @@ export class ResumeCreatorComponent implements OnInit {
 
   ngOnInit(): void {
     const storedData = JSON.parse(localStorage.getItem('formData')!);
+    const storedPage = localStorage.getItem('page');
 
     this.createForm();
 
     if (storedData) {
+      this.formPage = parseInt(storedPage!, 10)
+
       this.form.controls['name'].setValue(storedData.name)
       this.form.controls['surname'].setValue(storedData.surname)
       this.form.controls['image'].setValue(storedData.image)
@@ -37,26 +40,27 @@ export class ResumeCreatorComponent implements OnInit {
       this.form.controls['phone_number'].setValue(storedData.phone_number)
 
       this.experiences.clear()
-      let i = 0
-      storedData.experiences.forEach((element: any) => {
+      storedData.experiences.forEach((element: any, index: number) => {
         this.experiences.push(this.experienceForm())
-        this.experiences.at(i).setValue(element)
-        i++
+        this.experiences.at(index).setValue(element)
       });
 
       this.educations.clear()
-      let j = 0;
-      storedData.educations.forEach((element: any) => {
+      storedData.educations.forEach((element: any, index: number) => {
         this.educations.push(this.educationForm())
-        this.educations.at(j).setValue(element)
-        i++
+        this.educations.at(index).setValue(element)
       });
 
       this.sharedService.updateData(this.form.value);
 
+    } else {
+      localStorage.setItem('page', '1');
+      this.sharedService.updateData(this.form.value);
+      localStorage.setItem('formData', JSON.stringify(this.form.value));
     }
 
     this.form.valueChanges.subscribe(value => {
+      localStorage.setItem('page', this.formPage.toString());
       this.sharedService.updateData(this.form.value);
       localStorage.setItem('formData', JSON.stringify(this.form.value));
     });
@@ -76,7 +80,7 @@ export class ResumeCreatorComponent implements OnInit {
   }
 
   goToPage(pageName: string): void {
-    this.router.navigate([`${pageName}`]);
+    this.router.navigate([pageName], { replaceUrl: true });
   }
 
   clickUploadButton() {
@@ -89,6 +93,10 @@ export class ResumeCreatorComponent implements OnInit {
     reader.onload = (e: any) => {
       this.form.controls['image'].setValue(e.target.result)
     }
+  }
+
+  compareObjects(o1: any, o2: any): boolean {
+    return o1 && o2 && o1.id === o2.id;
   }
 
   getDegrees() {
@@ -143,41 +151,45 @@ export class ResumeCreatorComponent implements OnInit {
 
 
   sendForm() {
-    const formData = new FormData();
+    if (this.form.valid) {
+      const formData = new FormData();
 
-    formData.append('name', this.form.controls['name'].value);
-    formData.append('surname', this.form.controls['surname'].value);
-    formData.append('about_me', this.form.controls['about_me'].value);
-    formData.append('email', this.form.controls['email'].value);
-    formData.append('phone_number', this.formatedPhone(this.form.controls['phone_number'].value));
-    formData.append('image', this.dataURItoBlob(this.form.controls['image'].value));
+      formData.append('name', this.form.controls['name'].value);
+      formData.append('surname', this.form.controls['surname'].value);
+      formData.append('about_me', this.form.controls['about_me'].value);
+      formData.append('email', this.form.controls['email'].value);
+      formData.append('phone_number', this.formatedPhone(this.form.controls['phone_number'].value));
+      formData.append('image', this.dataURItoBlob(this.form.controls['image'].value));
 
-    for (let i = 0; i < this.experiences.length; i++) {
-      formData.append(`experiences[${i}][position]`, this.experiences.at(i).get('position')!.value);
-      formData.append(`experiences[${i}][employer]`, this.experiences.at(i).get('employer')!.value);
-      formData.append(`experiences[${i}][start_date]`, this.formatedDate(this.experiences.at(i).get('start_date')!.value));
-      formData.append(`experiences[${i}][due_date]`, this.formatedDate(this.experiences.at(i).get('due_date')!.value));
-      formData.append(`experiences[${i}][description]`, this.experiences.at(i).get('description')!.value);
+      for (let i = 0; i < this.experiences.length; i++) {
+        formData.append(`experiences[${i}][position]`, this.experiences.at(i).get('position')!.value);
+        formData.append(`experiences[${i}][employer]`, this.experiences.at(i).get('employer')!.value);
+        formData.append(`experiences[${i}][start_date]`, this.formatedDate(this.experiences.at(i).get('start_date')!.value));
+        formData.append(`experiences[${i}][due_date]`, this.formatedDate(this.experiences.at(i).get('due_date')!.value));
+        formData.append(`experiences[${i}][description]`, this.experiences.at(i).get('description')!.value);
+      }
+
+
+      for (let i = 0; i < this.educations.length; i++) {
+        formData.append(`educations[${i}][institute]`, this.educations.at(i).get('institute')!.value);
+        formData.append(`educations[${i}][degree_id]`, this.educations.at(i).get('degree')!.value.id);
+        formData.append(`educations[${i}][due_date]`, this.formatedDate(this.educations.at(i).get('due_date')!.value));
+        formData.append(`educations[${i}][description]`, this.educations.at(i).get('description')!.value);
+      }
+
+      this.http.post("https://resume.redberryinternship.ge/api/cvs", formData)
+        .subscribe(
+          response => {
+            // this.sharedService.updateData(response)
+            this.goToPage('resume-completed')
+            localStorage.clear();
+          },
+          error => {
+            console.error(error)
+          }
+        )
     }
 
-
-    for (let i = 0; i < this.educations.length; i++) {
-      formData.append(`educations[${i}][institute]`, this.educations.at(i).get('institute')!.value);
-      formData.append(`educations[${i}][degree_id]`, this.educations.at(i).get('degree')!.value.id);
-      formData.append(`educations[${i}][due_date]`, this.formatedDate(this.educations.at(i).get('due_date')!.value));
-      formData.append(`educations[${i}][description]`, this.educations.at(i).get('description')!.value);
-    }
-
-    this.http.post("https://resume.redberryinternship.ge/api/cvs", formData)
-      .subscribe(
-        response => {
-          this.goToPage('resume-completed')
-          //localStorage.clear();
-        },
-        error => {
-          console.error(error)
-        }
-      )
   }
 
   formatedDate(d: any) {
@@ -235,7 +247,7 @@ export class ResumeCreatorComponent implements OnInit {
   educationForm() {
     return new FormGroup({
       institute: new FormControl('', [Validators.required, Validators.minLength(2),]),
-      degree: new FormControl('', [Validators.required]),
+      degree: new FormControl(null, [Validators.required]),
       due_date: new FormControl(null, [Validators.required]),
       description: new FormControl('', [Validators.required]),
     });
